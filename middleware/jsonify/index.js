@@ -5,7 +5,8 @@ module.exports = () => {
       this.set("Content-Type", "application/json")
       // throw new Error('ERR') 
       // validate json object 
-      this.body = JSON.stringify(JSON.parse('<'+JSON.stringify(json)))
+      // console.log(json)
+      this.body = JSON.stringify(JSON.parse(JSON.stringify(json)))
   }
   return async (ctx, next) => {
     try{

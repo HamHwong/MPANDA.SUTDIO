@@ -1,14 +1,19 @@
  const UtilsCollection={
-    'logger':require('./log4js')
+    'db':require('./mongodb'),
+    'logger':require('./log4js'),
 }
 module.exports = (app)=>{ 
+    console.log('UtilsCollection',UtilsCollection)
     for(utilCommand in UtilsCollection){
-        app.use(async (ctx,next)=>{
-            if(!ctx.utils){
-                ctx.utils = {}
-            }
-            ctx.utils[utilCommand] = UtilsCollection[utilCommand]
-            await next()
-        }) 
+        ((utilCommand)=>{
+            app.use(async (ctx,next)=>{
+                if(!ctx.utils){
+                    ctx.utils = {}
+                }
+                ctx.utils[utilCommand] = UtilsCollection[utilCommand]
+                await next()
+            }) 
+        })(utilCommand)
+
     } 
 }
