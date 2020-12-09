@@ -1,17 +1,33 @@
+/*
+ * @Author: your name
+ * @Date: 2020-12-07 10:55:23
+ * @LastEditTime: 2020-12-09 13:25:31
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /MPANDA.SUTDIO/utils/mongodb/index.js
+ */
 var client = require('mongodb').MongoClient;
-var url = "mongodb://localhost:8111/?readPreference=primary&ssl=false";
+var config = require('../../config'); 
+const {
+  username,
+  password,
+  host,
+  port
+} = config.mongoDB
+var url = `mongodb://${username}:${password}@${host}:${port}/?readPreference=primary&ssl=false`;
+// console.log('URL',url)
 module.exports = {
   async Connect(queryFunc) {
     return new Promise((res, rej) => {
       client.connect(url, async function (err, db) {
-        console.log("数据库已连接!");
         if (err) {
           rej(err)
           throw err;
         }
-        var dbo = db.db('test');
+        var dbo = db.db('Mpanda');
         const result = await queryFunc(dbo);
-        res(result)
+        console.log("数据库连接已创建!");
+        res(result);
         await db.close();
       })
     })
