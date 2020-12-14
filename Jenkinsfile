@@ -1,11 +1,11 @@
 pipeline {
   agent any
   stages {
-    stage('') {
+    stage('Start') {
       steps {
-        echo 'Hello World From Github Hooks'
+        echo 'Start Jenkins Build.'
       }
     }
-
+    
   }
 }
