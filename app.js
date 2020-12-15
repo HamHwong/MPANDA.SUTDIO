@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 13:53:40
- * @LastEditTime: 2020-12-15 15:17:38
- * @LastEditors: your name
+ * @LastEditTime: 2020-12-15 16:03:02
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/app.js
  */
@@ -21,6 +21,9 @@ middleware(app)
 // Mount Utils
 utils(app)
 // Setup Main App
+app.use(ctx=>{
+  ctx.body="test";
+})
 app
   .use(router.routes())
   .use(static)
