@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 13:53:40
- * @LastEditTime: 2020-12-15 16:06:51
+ * @LastEditTime: 2020-12-15 16:07:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/app.js
@@ -24,10 +24,11 @@ utils(app)
 app
   // .use(router.routes())
   .use(static)
+  .use(ctx=>{
+    ctx.body="test";
+  })
   .listen(port,'0.0.0.0', function () {
     console.log('listen at http://localhost:' + port);
-  }).use(ctx=>{
-    ctx.body="test";
   });
 
 module.exports = app
