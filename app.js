@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 13:53:40
- * @LastEditTime: 2020-12-15 16:08:38
+ * @LastEditTime: 2020-12-16 15:20:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/app.js
@@ -24,7 +24,7 @@ utils(app)
 app
   .use(router.routes())
   .use(static)
-  .listen(port,'0.0.0.0', function () {
+  .listen(port,function () {
     console.log('listen at http://localhost:' + port);
   });
 
