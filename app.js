@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 13:53:40
- * @LastEditTime: 2020-12-16 15:20:21
+ * @LastEditTime: 2020-12-17 17:44:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/app.js
@@ -11,11 +11,14 @@ const app = new Koa();
 const config = require("./config")
 const router = require("./router")
 const middleware = require("./middleware");
+const bodyParser=require('koa-bodyparser')     //获取post数据 
 const utils = require("./utils");
 const {
   port,
   static
-} = config
+} = config 
+
+app.use(bodyParser())
 // Mount MiddleWare
 middleware(app)
 // Mount Utils
