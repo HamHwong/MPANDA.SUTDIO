@@ -1,8 +1,17 @@
+/*
+ * @Author: your name
+ * @Date: 2020-12-14 13:53:40
+ * @LastEditTime: 2020-12-17 17:44:48
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /MPANDA.SUTDIO/app.js
+ */
 const Koa = require("koa");
 const app = new Koa();
 const config = require("./config")
 const router = require("./router")
 const middleware = require("./middleware");
+const bodyParser=require('koa-bodyparser')     //获取post数据 
 const utils = require("./utils");
 
 var cors = require('koa2-cors');
@@ -35,7 +44,7 @@ app.use(cors());
 app
   .use(router.routes())
   .use(static)
-  .listen(port, function () {
+  .listen(port,function () {
     console.log('listen at http://localhost:' + port);
   });
 

@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-12-07 10:55:23
- * @LastEditTime: 2020-12-09 13:25:52
- * @LastEditors: your name
+ * @LastEditTime: 2020-12-16 16:23:04
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/utils/index.js
  */
@@ -10,7 +10,7 @@
     'db':require('./mongodb'),
     'logger':require('./log4js'),
 }
-module.exports = (app)=>{  
+module.exports = (app)=>{
     for(utilCommand in UtilsCollection){
         ((utilCommand)=>{
             app.use(async (ctx,next)=>{
@@ -21,6 +21,5 @@ module.exports = (app)=>{
                 await next()
             }) 
         })(utilCommand)
-
     } 
 }
