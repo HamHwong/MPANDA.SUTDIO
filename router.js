@@ -9,7 +9,9 @@
 
 var Router = require('koa-router'); 
 var routers = require("./api/index")
-var mainRouter = new Router({prefix:'/api'}); 
+var mainRouter = new Router(
+  // {prefix:'/api'}
+); 
 
 routers.forEach(async router => { 
   mainRouter
@@ -19,6 +21,7 @@ routers.forEach(async router => {
 mainRouter
   .post('/auth',async ctx=>{
     const {username} =  ctx.request.body
+    console.log('===')
     ctx.body = username
   })
 mainRouter.get('',ctx=>{

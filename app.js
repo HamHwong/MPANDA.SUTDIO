@@ -10,8 +10,7 @@ const Koa = require("koa");
 const app = new Koa();
 const config = require("./config")
 const router = require("./router")
-const middleware = require("./middleware");
-const bodyParser=require('koa-bodyparser')     //获取post数据 
+const middleware = require("./middleware"); 
 const utils = require("./utils");
 
 var cors = require('koa2-cors');

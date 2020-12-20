@@ -17,9 +17,10 @@ router.get('/a',async (ctx,next)=>{
   ctx.send(new response());
 })
 router.post('/imageUpload',async (ctx,next)=>{
-  var file = ctx.request.body.files.file[0];
-  var tmpath= file['path'];
-  console.log(tmpath)
+  console.log('aaa')
+  var formdata = ctx.request.files;
+  // var tmpath= file['path'];
+  console.log(formdata.file.name)
   ctx.send(new response());
 })
 
