@@ -1,11 +1,12 @@
 /*
  * @Author: your name
- * @Date: 2020-12-07 10:55:23
- * @LastEditTime: 2020-12-21 13:15:59
+ * @Date: 2020-12-21 00:23:45
+ * @LastEditTime: 2020-12-21 13:47:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/api/index.js
  */
+let {uploadAndDisplayImage} = require('../business/homepage')
 let router = require('koa-router')()
 var response = require('../model/response.model')
 router.get('/a',async (ctx,next)=>{   
@@ -16,10 +17,11 @@ router.get('/a',async (ctx,next)=>{
   ctx.send(new response());
 })
 router.post('/imageUpload',async (ctx,next)=>{
-  console.log('aaa')
+  //console.log('aaa')
   var formdata = ctx.request.files;
   // var tmpath= file['path'];
   console.log(formdata.file.name)
+  uploadAndDisplayImage(formdata.file)
   ctx.send(new response());
 })
 
