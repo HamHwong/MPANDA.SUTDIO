@@ -11,6 +11,6 @@ module.exports= class file{
         this.fileId = fileId
         this.fileName = fileName
         this.suffix = suffix
-        this.path = path
+        this.path = path 
     }
 }

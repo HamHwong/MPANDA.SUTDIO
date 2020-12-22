@@ -11,7 +11,7 @@ class response{
     // const {Data,Message,isSuccess} = data
     this.Data = data
     this.Message = 'Message'
-    this.IsSuccess = 'IsSuccess'
+    this.IsSuccess = true
     this.StatusCode = 200
   } 
   GetError(ErrorMessage){

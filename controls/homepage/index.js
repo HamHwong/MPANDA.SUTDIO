@@ -20,12 +20,16 @@ module.exports = {
     },
     ReadImage: async function(id) { 
         let result = null
-        let record = await db.Query('Attachments',{fileId:id})
-        if(record){
-            const {filePath} = record
-            console.log('filePath',filePath)
-            result = filePath
-            // await readFilesASBase64(path)
+        let records = await db.Query('Attachments',{fileId:id})
+        if(records.length>0){
+            const record = records[0]
+            const {path} = record  
+            result = new file({
+                fileId:record.fileId,
+                fileName:record.fileName,
+                suffix:record.suffix
+            })  
+            result.base64 = await readFilesASBase64(path)
         }
         return result
     }

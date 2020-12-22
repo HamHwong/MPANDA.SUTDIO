@@ -22,8 +22,8 @@ router.post('/image/upload', async (ctx, next) => {
   var formdata = ctx.request.files;
   ctx.send(new response(await UploadImage(formdata.file, ctx)));
 })
-router.get('/image/:id', async (ctx, next) => { 
-  console.log(this.params);
+router.get('/image/:id', async (ctx, next) => {  
+  ctx.send(new response(await ReadImage(ctx.params.id)))
 })
 
 module.exports = [

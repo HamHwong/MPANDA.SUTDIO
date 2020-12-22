@@ -58,13 +58,26 @@ module.exports = {
         console.log('result', result)
         return result;
     },
-    readFilesASBase64: async function (id) {
-        let reader = fs.createReadStream(path, {
-            encoding: 'base64'
+    readFilesASBase64: async function (path) {
+        return new Promise((res,rej)=>{
+            console.log('读取中。。。',path)
+            let buffer = []
+            let reader = fs.createReadStream(path, { 
+                encoding: 'base64',
+                highWaterMark:1
+            })
+            reader.on('data', (data) => {
+                // console.log(path, 'data',);
+                buffer.push(data)
+            });
+            reader.on('end',(e)=>{ 
+                res(buffer.join('')) 
+            })
+            reader.on('error',function (err) {
+                console.log(err);
+                rej(err)
+            })
         })
-        reader.on('data', (data) => {
-            console.log(path, 'data', Buffer.from(data, 'base64').toString());
-        });
     },
 
 }
