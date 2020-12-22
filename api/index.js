@@ -1,16 +1,15 @@
 /*
  * @Author: your name
  * @Date: 2020-12-21 00:23:45
- * @LastEditTime: 2020-12-21 13:47:58
+ * @LastEditTime: 2020-12-22 16:40:19
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/api/index.js
  */
-let {uploadAndDisplayImage} = require('../business/homepage')
+let {UploadImage} = require('../controls/homepage')
 let router = require('koa-router')()
 var response = require('../model/response.model')
-router.get('/a',async (ctx,next)=>{   
-  // await ctx.utils.db.Insert('mpanda',{c:100,id:1111});
+router.get('/a',async (ctx,next)=>{
   var result = await ctx.utils.db.Query('mpanda',{c:100}); 
   console.log(result)
 // ctx.send()
@@ -20,8 +19,8 @@ router.post('/imageUpload',async (ctx,next)=>{
   //console.log('aaa')
   var formdata = ctx.request.files;
   // var tmpath= file['path'];
-  console.log(formdata.file.name)
-  uploadAndDisplayImage(formdata.file)
+  // console.log(formdata.file.name)
+  UploadImage(formdata.file,ctx)
   ctx.send(new response());
 })
 
