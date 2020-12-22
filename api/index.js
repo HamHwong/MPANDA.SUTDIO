@@ -1,27 +1,29 @@
 /*
  * @Author: your name
  * @Date: 2020-12-21 00:23:45
- * @LastEditTime: 2020-12-22 16:40:19
+ * @LastEditTime: 2020-12-22 17:26:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/api/index.js
  */
-let {UploadImage} = require('../controls/homepage')
+let {
+  UploadImage,
+  ReadImage
+} = require('../controls/homepage')
 let router = require('koa-router')()
 var response = require('../model/response.model')
-router.get('/a',async (ctx,next)=>{
-  var result = await ctx.utils.db.Query('mpanda',{c:100}); 
-  console.log(result)
-// ctx.send()
-  ctx.send(new response());
+router.get('/a', async (ctx, next) => {
+  var result = await ctx.utils.db.Query('mpanda', {
+    c: 100
+  }); 
+  ctx.send(new response(result));
 })
-router.post('/imageUpload',async (ctx,next)=>{
-  //console.log('aaa')
+router.post('/image/upload', async (ctx, next) => {
   var formdata = ctx.request.files;
-  // var tmpath= file['path'];
-  // console.log(formdata.file.name)
-  UploadImage(formdata.file,ctx)
-  ctx.send(new response());
+  ctx.send(new response(await UploadImage(formdata.file, ctx)));
+})
+router.get('/image/:id', async (ctx, next) => { 
+  console.log(this.params);
 })
 
 module.exports = [

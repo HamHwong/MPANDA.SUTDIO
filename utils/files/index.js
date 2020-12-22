@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-21 13:25:18
- * @LastEditTime: 2020-12-22 16:58:29
+ * @LastEditTime: 2020-12-22 17:06:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/utils/files/index.js
@@ -58,7 +58,7 @@ module.exports = {
         console.log('result', result)
         return result;
     },
-    readFilesASBase64: async function (path) {
+    readFilesASBase64: async function (id) {
         let reader = fs.createReadStream(path, {
             encoding: 'base64'
         })
