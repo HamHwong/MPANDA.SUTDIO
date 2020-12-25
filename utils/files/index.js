@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-21 13:25:18
- * @LastEditTime: 2020-12-22 17:06:42
+ * @LastEditTime: 2020-12-24 14:18:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/utils/files/index.js
@@ -55,27 +55,25 @@ module.exports = {
                 await reader.pipe(writer)
             })
         }
-        console.log('result', result)
         return result;
     },
     readFilesASBase64: async function (path) {
         return new Promise((res,rej)=>{
-            console.log('读取中。。。',path)
+            console.log('读取中成base64。。。')
             let buffer = []
             let reader = fs.createReadStream(path, { 
                 encoding: 'base64',
                 highWaterMark:1
             })
-            reader.on('data', (data) => {
-                // console.log(path, 'data',);
+            reader.on('data', (data) => { 
                 buffer.push(data)
             });
             reader.on('end',(e)=>{ 
-                res(buffer.join('')) 
+                res(buffer.join(''))  
+                console.log('读取成base64完。。。')
             })
-            reader.on('error',function (err) {
-                console.log(err);
-                rej(err)
+            reader.on('error',function (err) { 
+                rej(new Error(err))
             })
         })
     },

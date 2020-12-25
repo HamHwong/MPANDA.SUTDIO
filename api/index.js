@@ -1,14 +1,15 @@
 /*
  * @Author: your name
  * @Date: 2020-12-21 00:23:45
- * @LastEditTime: 2020-12-22 17:26:03
+ * @LastEditTime: 2020-12-24 13:34:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/api/index.js
  */
 let {
   UploadImage,
-  ReadImage
+  ReadImage,
+  ReadBinarizationImage
 } = require('../controls/homepage')
 let router = require('koa-router')()
 var response = require('../model/response.model')
@@ -23,7 +24,8 @@ router.post('/image/upload', async (ctx, next) => {
   ctx.send(new response(await UploadImage(formdata.file, ctx)));
 })
 router.get('/image/:id', async (ctx, next) => {  
-  ctx.send(new response(await ReadImage(ctx.params.id)))
+  // ctx.send(new response(await ReadImage(ctx.params.id)))
+  ctx.send(new response(await ReadBinarizationImage(ctx.params.id)))
 })
 
 module.exports = [

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-07 10:55:23
- * @LastEditTime: 2020-12-09 13:25:31
+ * @LastEditTime: 2020-12-24 14:17:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/utils/mongodb/index.js
@@ -15,7 +15,7 @@ const {
   port
 } = config.mongoDB
 var url = `mongodb://${username}:${password}@${host}:${port}/?readPreference=primary&ssl=false`;
-// console.log('URL',url)
+ 
 module.exports = {
   async Connect(queryFunc) {
     return new Promise((res, rej) => {
