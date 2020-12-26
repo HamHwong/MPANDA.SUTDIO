@@ -9,7 +9,9 @@
 let {
   UploadImage,
   ReadImage,
-  ReadBinarizationImage
+  ReadImageByID,
+  BinarizationImage,
+  QueryImage
 } = require('../controls/homepage')
 let router = require('koa-router')()
 var response = require('../model/response.model')
@@ -21,11 +23,21 @@ router.get('/a', async (ctx, next) => {
 })
 router.post('/image/upload', async (ctx, next) => {
   var formdata = ctx.request.files;
-  ctx.send(new response(await UploadImage(formdata.file, ctx)));
+  ctx.send(new response(await UploadImage(formdata.file)));
 })
-router.get('/image/:id', async (ctx, next) => {  
-  // ctx.send(new response(await ReadImage(ctx.params.id)))
-  ctx.send(new response(await ReadBinarizationImage(ctx.params.id)))
+router.get('/image/:id', async (ctx, next) => {   
+  ctx.send(new response(await ReadImageByID(ctx.params.id)))
+})
+router.post('/MapleStory/image/upload', async (ctx, next) => {
+  var path = '/Upload_Files/MXD/'
+  var formdata = ctx.request.files;
+  var fileId = await UploadImage(formdata.file, path);
+  ctx.send(new response(fileId));
+})
+router.post('/MapleStory/image/search',async(ctx,next)=>{
+  var formdata = ctx.request.files;
+  let results = await QueryImage(formdata)
+  ctx.send(new response(results));
 })
 
 module.exports = [

@@ -45,12 +45,13 @@ module.exports = {
                     autoClose: true,
                 }).on('finish', async () => {
                     console.log('保存完')
-                    res(new fileRecord({
+                    var file = new fileRecord({
                         fileId: UUIDFileName,
                         fileName: FileName,
                         suffix: FileSuffix,
                         path: FullPathOfFiles
-                    }))
+                    })
+                    res(file)
                 })
                 await reader.pipe(writer)
             })
@@ -58,24 +59,41 @@ module.exports = {
         return result;
     },
     readFilesASBase64: async function (path) {
-        return new Promise((res,rej)=>{
+        return new Promise((res, rej) => {
             console.log('读取中成base64。。。')
             let buffer = []
-            let reader = fs.createReadStream(path, { 
+            let reader = fs.createReadStream(path, {
                 encoding: 'base64',
-                highWaterMark:1
+                highWaterMark: 1
             })
-            reader.on('data', (data) => { 
+            reader.on('data', (data) => {
                 buffer.push(data)
             });
-            reader.on('end',(e)=>{ 
-                res(buffer.join(''))  
+            reader.on('end', (e) => {
+                res(buffer.join(''))
                 console.log('读取成base64完。。。')
             })
-            reader.on('error',function (err) { 
+            reader.on('error', function (err) {
                 rej(new Error(err))
             })
         })
     },
+    base64ImageFormat: function (file) {
+        switch (file.suffix) {
+            case "png":
+                file.base64 = "data:image/png;base64," + file.base64;
+                break;
+            case "jpg":
+            case "jpeg":
+                file.base64 = "data:image/jpeg;base64," + file.base64;
+                break;
+            case "gif":
+                file.base64 = "data:image/gif;base64," + file.base64;
+                break;
+            default:
+                throw new Error('不能识别该图片！')
+        }
+        return file
+    }
 
 }

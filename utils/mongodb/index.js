@@ -41,5 +41,10 @@ module.exports = {
     return this.Connect((dbo) => {
       return dbo.collection(table).insertOne(obj);
     })
+  },
+  async Update(table,obj,method) {
+    return this.Connect((dbo) => {
+      return dbo.collection(table).updateOne(obj,method);
+    })
   }
 }
