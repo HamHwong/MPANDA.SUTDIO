@@ -6,9 +6,10 @@
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/model/files.records.model.js
  */
+const uuid = require('uuid');
 module.exports= class file{
     constructor({fileId,fileName,suffix,path}) {
-        this.fileId = fileId
+        this.fileId = fileId|| uuid.v1()
         this.fileName = fileName
         this.suffix = suffix
         this.path = path 

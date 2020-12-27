@@ -26,7 +26,7 @@ module.exports = {
         }
         var dbo = db.db('Mpanda');
         const result = await queryFunc(dbo);
-        console.log("数据库连接已创建!");
+        // console.log("数据库连接已创建!");
         res(result);
         await db.close();
       })

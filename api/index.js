@@ -12,7 +12,9 @@ let {
   ReadImageByID,
   BinarizationImage,
   QueryImage,
-  InitAllStringXML
+  // InitAllStringXML,
+  ReadBinarizationImageById,
+  InitAllImage
 } = require('../controls/homepage')
 
 let router = require('koa-router')()
@@ -29,6 +31,7 @@ router.post('/image/upload', async (ctx, next) => {
 })
 router.get('/image/:id', async (ctx, next) => {   
   ctx.send(new response(await ReadImageByID(ctx.params.id)))
+  // ctx.send(new response(await ReadBinarizationImageById(ctx.params.id)))
 })
 router.post('/MapleStory/image/upload', async (ctx, next) => {
   var path = '/Upload_Files/MXD/'
@@ -41,8 +44,11 @@ router.post('/MapleStory/image/search',async(ctx,next)=>{
   let results = await QueryImage(formdata)
   ctx.send(new response(results));
 })
-router.post('/MapleStory/import',async(ctx,next)=>{ 
-  ctx.send(new response(await InitAllStringXML()));
+// router.post('/MapleStory/import',async(ctx,next)=>{ 
+//   ctx.send(new response(await InitAllStringXML()));
+// })
+router.post('/MapleStory/imageBatchimport',async(ctx,next)=>{ 
+  ctx.send(new response(await InitAllImage()));
 })
 
 module.exports = [

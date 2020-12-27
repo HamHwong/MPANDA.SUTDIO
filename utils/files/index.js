@@ -27,6 +27,24 @@ async function checkExistAndCreateDirIfNotExist(path) {
     }
     return result
 }
+function readfiles (dir, list,query) {
+    // console.log('query',query)
+    const arr = fs.readdirSync(dir)
+    arr.forEach(item => { 
+        const itemPath =  dir + item
+        const isDir = fs.statSync(itemPath).isDirectory()
+        if (isDir) {
+            const temp = dir + item + '/'
+            readfiles(temp, list,query)
+        }else {
+            if(itemPath.indexOf(query)>0){
+                // console.log(itemPath)
+                // console.log('itemPath.indexOf(query)>0',itemPath.indexOf(query)>0)
+                list.push(itemPath) 
+            } 
+        } 
+    })
+}
 module.exports = {
     writeToFile: async function (file, filepath, name) {
         let result = null;
@@ -44,7 +62,7 @@ module.exports = {
                     mode: 0o666,
                     autoClose: true,
                 }).on('finish', async () => {
-                    console.log('保存完')
+                    // console.log('保存完')
                     var file = new fileRecord({
                         fileId: UUIDFileName,
                         fileName: FileName,
@@ -58,12 +76,12 @@ module.exports = {
         }
         return result;
     },
-    readFromFile: async function (filePath){
+    readFromFile: async function (filePath) {
         return await fs.readFileSync(filePath);
     },
     readFilesASBase64: async function (path) {
         return new Promise((res, rej) => {
-            console.log('读取中成base64。。。')
+            // console.log('读取中成base64。。。')
             let buffer = []
             let reader = fs.createReadStream(path, {
                 encoding: 'base64',
@@ -74,7 +92,7 @@ module.exports = {
             });
             reader.on('end', (e) => {
                 res(buffer.join(''))
-                console.log('读取成base64完。。。')
+                // console.log('读取成base64完。。。')
             })
             reader.on('error', function (err) {
                 rej(new Error(err))
@@ -82,6 +100,7 @@ module.exports = {
         })
     },
     base64ImageFormat: function (file) {
+        console.log(file)
         switch (file.suffix) {
             case "png":
                 file.base64 = "data:image/png;base64," + file.base64;
@@ -98,13 +117,13 @@ module.exports = {
         }
         return file
     },
-    findAllXMLFileUnderFolder:async function (path){
-        return new Promise((res,rej)=>{
-            fs.readdir(path,(err,files)=>{
+    findAllXMLFileUnderFolder: async function (path) {
+        return new Promise((res, rej) => {
+            fs.readdir(path, (err, files) => {
                 // console.log(files)
                 res(files)
             })
         })
-    }
-
+    },
+    readfiles
 }
