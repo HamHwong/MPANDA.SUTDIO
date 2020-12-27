@@ -11,8 +11,10 @@ let {
   ReadImage,
   ReadImageByID,
   BinarizationImage,
-  QueryImage
+  QueryImage,
+  InitAllStringXML
 } = require('../controls/homepage')
+
 let router = require('koa-router')()
 var response = require('../model/response.model')
 router.get('/a', async (ctx, next) => {
@@ -38,6 +40,9 @@ router.post('/MapleStory/image/search',async(ctx,next)=>{
   var formdata = ctx.request.files;
   let results = await QueryImage(formdata)
   ctx.send(new response(results));
+})
+router.post('/MapleStory/import',async(ctx,next)=>{ 
+  ctx.send(new response(await InitAllStringXML()));
 })
 
 module.exports = [

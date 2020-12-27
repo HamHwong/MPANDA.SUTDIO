@@ -58,6 +58,9 @@ module.exports = {
         }
         return result;
     },
+    readFromFile: async function (filePath){
+        return await fs.readFileSync(filePath);
+    },
     readFilesASBase64: async function (path) {
         return new Promise((res, rej) => {
             console.log('读取中成base64。。。')
@@ -94,6 +97,14 @@ module.exports = {
                 throw new Error('不能识别该图片！')
         }
         return file
+    },
+    findAllXMLFileUnderFolder:async function (path){
+        return new Promise((res,rej)=>{
+            fs.readdir(path,(err,files)=>{
+                // console.log(files)
+                res(files)
+            })
+        })
     }
 
 }

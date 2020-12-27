@@ -15,7 +15,8 @@ const static = static_(
 var port = '8100';
 // MongoDB Settings
 var mongoDB = {
-  host:'45.77.185.26',
+  // host:'45.77.185.26',
+  host:'localhost',
   port:8111,
   username:'admin',
   password:'hh0504hH!'

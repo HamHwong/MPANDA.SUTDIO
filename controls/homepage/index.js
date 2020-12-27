@@ -12,6 +12,9 @@ const imageFile = require('../../model/image.records.model')
 const imgUtils = require('../../utils/images')
 const fileUtils = require('../../utils/files')
 const mathUtils = require('../../utils/math')
+let {
+    readXMLAsJson
+} = require('../../utils/xml')
 const Canvas = require('canvas')
 const {
     writeToFile,
@@ -55,7 +58,7 @@ async function ReadImageByID(id) {
         }
     })
 }
-async function ReadBinarizationImageById (id) {
+async function ReadBinarizationImageById(id) {
     return new Promise(async (res, rej) => {
         var fileRecord = await ReadImageByID(id);
         let img = new Canvas.Image()
@@ -113,7 +116,7 @@ async function ReadBinarizationImageById (id) {
         img.src = fileRecord.base64
     })
 }
-async function BinarizationImage (file) {
+async function BinarizationImage(file) {
     return new Promise(async (res, rej) => {
         var fileRecord = await ReadImage(file);
         let img = new Canvas.Image()
@@ -222,21 +225,38 @@ function CutImage(OriginImageData, BinarizationImageData) {
     }
     return OriginImageData
 }
- 
+
 function GetImageInfo(ImgData, w, h) {
     return {
         averageColor: getImageAverageColor(ImgData, w, h),
-        pixels: mathUtils.CountArr(ImgData.data, w, h) 
+        pixels: mathUtils.CountArr(ImgData.data, w, h)
     }
+}
+
+async function ReadAndFormatXML(path) {
+    let result = await readXMLAsJson(path)
+    return result.imgdir.imgdir.map(item => {
+        return {
+            id: item && item.$.name,
+            name: item && item.string && item.string[0] && item.string[0].$ && item.string[0].$.value,
+            desc: item && item.string && item.string[1] && item.string[1].$ && item.string[1].$.value,
+        }
+    })
 }
 module.exports = {
     UploadImage: async function (file, path) {
-        let fileRecord = await writeToFile(file, path || '/Upload_Files/', file.name) 
+        let fileRecord = await writeToFile(file, path || '/Upload_Files/', file.name)
         await db.Insert('Attachments', fileRecord)
         let fileId = fileRecord.fileId
         fileRecord = await ReadBinarizationImageById(fileRecord.fileId)
         console.log('更新')
-        await db.Update('Attachments',{'fileId':fileId},{$set:{'pixels':fileRecord.pixels}}).catch(e=>{
+        await db.Update('Attachments', {
+            'fileId': fileId
+        }, {
+            $set: {
+                'pixels': fileRecord.pixels
+            }
+        }).catch(e => {
             console.log(e)
         })
         console.log('更新完毕')
@@ -250,12 +270,28 @@ module.exports = {
     ReadBinarizationImageById,
     // 上传图片进行二值化
     BinarizationImage,
-    QueryImage:async (formdata)=>{
-        let fileRecord =  await BinarizationImage(formdata)
+    QueryImage: async (formdata) => {
+        let fileRecord = await BinarizationImage(formdata)
         let QueryPixels = fileRecord.pixels
-        // console.log('QueryPixels',QueryPixels)
-        let result = await db.Query('Attachments',{'pixels':QueryPixels})
-        // console.log('Result',result)
+        let result = await db.Query('Attachments', {
+            'pixels': QueryPixels
+        })
         return result
+    },
+    InitAllStringXML: async () => {
+        let stringWZPath = 'C:/Users/Administrator/Desktop/export/String.wz/'
+        let filesPathArr = await fileUtils.findAllXMLFileUnderFolder(stringWZPath)
+        let arr =  await new Promise((res,rej)=>{
+            let promiseArr = []
+            filesPathArr.map(async fileName => {  
+                promiseArr.push(ReadAndFormatXML(stringWZPath + fileName) )
+            }) 
+            Promise.all(promiseArr).then(AllPromise=>{ 
+                res(AllPromise.reduce((pre,next)=>{
+                    return pre.concat(next)
+                },[]))
+            })
+        })
+        db.Insert('ItemsString',arr)
     }
 }

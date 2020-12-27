@@ -38,9 +38,15 @@ module.exports = {
     })
   },
   async Insert(table,obj) {
-    return this.Connect((dbo) => {
-      return dbo.collection(table).insertOne(obj);
-    })
+    if(obj instanceof Array){
+      return this.Connect((dbo) => {
+        return dbo.collection(table).insertMany(obj);
+      })
+    }else{
+      return this.Connect((dbo) => {
+        return dbo.collection(table).insertOne(obj);
+      })
+    }
   },
   async Update(table,obj,method) {
     return this.Connect((dbo) => {
