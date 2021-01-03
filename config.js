@@ -19,7 +19,11 @@ var mongoDB = {
   host:'localhost',
   port:8111,
   username:'admin',
-  password:'hh0504hH!'
+  password:'hh0504hH!',
+  MXD:{
+    StringCollection:'ItemStrings',
+    ImageCollection:'Attachments'
+  }
 }
 module.exports = { 
   port,

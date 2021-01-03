@@ -38,6 +38,7 @@ router.post('/MapleStory/importAllXML',async(ctx,next)=>{
 router.post('/MapleStory/imageBatchImport',async(ctx,next)=>{ 
   var path ='C:/Users/Administrator/Desktop/export/Item.wz/'
   var pathIncludingString = '.icon.'
+  // var pathIncludingString = '04310001.info.icon.png'
   ctx.send(new response(await InitAllImage(path,pathIncludingString)));
 })
 

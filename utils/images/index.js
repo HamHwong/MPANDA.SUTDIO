@@ -78,15 +78,15 @@ function CutImageByBinarizationImage(OriginImageData, BinarizationImageData) {
  * @param {*} exclude 除了某个指定颜色以外的其余像素个数
  * @return {*} 
  */
-function CountSpecificColorPixels(arr,[r=255,g=255,b=255,a=255],exclude=false) {
+function CountSpecificColorPixels(arr,[r=255,g=255,b=255],exclude=true) {
     var count = 0
     for (var i = 0; i < arr.length; i += 4) {
         if(exclude){
-            if (!(arr[i] === r && arr[i + 1] === g && arr[i + 2] === b&& arr[i + 3] === a)) {
+            if (!(arr[i] === r && arr[i + 1] === g && arr[i + 2] === b)) {
                 count++
             }
         }else{
-            if (arr[i] === r && arr[i + 1] === g && arr[i + 2] === b&& arr[i + 3] === a) {
+            if (arr[i] === r && arr[i + 1] === g && arr[i + 2] === b) {
                 count++
             }
         }
@@ -132,7 +132,7 @@ function GetImageAverageColor(ImageData, w, h) {
 function GetImageInfo(ImgData, w, h) {
     return {
         averageColor: GetImageAverageColor(ImgData, w, h),
-        pixels: CountSpecificColorPixels(ImgData.data,[255,255,255,255],true)
+        pixels: CountSpecificColorPixels(ImgData.data,[255,255,255,255],false)
     }
 }
 
@@ -167,7 +167,8 @@ function RemoveBlanks(imageData, imgWidth, imgHeight) {
                     }
                 }
             }
-            return null; // all image is white
+            // all image is white
+            return null; 
         },
         scanX = function (fromLeft) {
             var offset = fromLeft ? 1 : -1;
@@ -180,9 +181,9 @@ function RemoveBlanks(imageData, imgWidth, imgHeight) {
                     }
                 }
             }
-            return null; // all image is white
+            // all image is white
+            return null; 
         };
-
     return {
         cropTop: scanY(true),
         cropBottom: scanY(false),

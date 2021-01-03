@@ -11,11 +11,12 @@ const fileUtils = require('../../utils/files')
 const Bagpipe = require('bagpipe') 
 const MIME = require('mime') 
 const {BinarizationImage } = require('../Images')
+const {mongoDB:{MXD:MXDConfig}} = require('../../config')
 async function QueryImage(formdata) {
     let fileRecord = await BinarizationImage(formdata.file)
     let QueryPixels = fileRecord.pixels
     console.log('查询像素', fileRecord.pixels)
-    let result = await db.Query('Attachments', {
+    let result = await db.Query(MXDConfig.ImageCollection, {
         $and: [{
                 'pixels': {
                     $gte: QueryPixels,
@@ -60,23 +61,28 @@ async function InitAllImage(path,pathIncludingString) {
         let ImgPath = path
         let pathArr = ImgPath.split('/')
         var extension = MIME.getExtension(MIME.getType(ImgPath))
-        let name = pathArr[pathArr.length - 1].split('.')[0] + extension?'.'+extension:''
+        let name = pathArr[pathArr.length - 1].split('.')[0] + (extension?'.'+extension:'')
+        // console.log('name:'+name)
         let result = await BinarizationImage({
-            file: {
-                path: ImgPath,
-                name: name,
-                fileId: name
-            }
+            path: ImgPath,
+            name: name,
+            suffix: '.'+extension
         })
-        result.path = ImgPath
-        result.fileName = name
-        delete result.base64
-        callback()
-        return await db.Insert('Attachments', result)
+        if(result.width>5 && result.height>5){
+            result.path = ImgPath
+            result.fileName = name
+            delete result.base64
+            await db.Insert(MXDConfig.ImageCollection, result)
+            console.log('导入图片像素为：'+result.pixels+',宽:'+result.width+',高'+result.height)
+            callback(result) 
+        }else{ 
+            // console.log('图片像素过小,并非装备，遗弃！')
+            callback()
+        }
     }
     for (var index = 0; index < count; index++) {
-        bagpipe.push(BIA, arr[index], () => {
-            console.log('搞定！')
+        bagpipe.push(BIA, arr[index], (item) => { 
+            // console.log(item+'已导入！')
         })
     }
     bagpipe.on('full', function (length) {
