@@ -6,6 +6,7 @@
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/utils/images/index.js
  */
+const Canvas = require('canvas')
 /**
  * 图片颜色反转
  * @param {*} ImageData
@@ -78,14 +79,14 @@ function CutImageByBinarizationImage(OriginImageData, BinarizationImageData) {
  * @param {*} exclude 除了某个指定颜色以外的其余像素个数
  * @return {*} 
  */
-function CountSpecificColorPixels(arr,[r=255,g=255,b=255],exclude=true) {
+function CountSpecificColorPixels(arr, [r = 255, g = 255, b = 255], exclude = true) {
     var count = 0
     for (var i = 0; i < arr.length; i += 4) {
-        if(exclude){
+        if (exclude) {
             if (!(arr[i] === r && arr[i + 1] === g && arr[i + 2] === b)) {
                 count++
             }
-        }else{
+        } else {
             if (arr[i] === r && arr[i + 1] === g && arr[i + 2] === b) {
                 count++
             }
@@ -132,7 +133,7 @@ function GetImageAverageColor(ImageData, w, h) {
 function GetImageInfo(ImgData, w, h) {
     return {
         averageColor: GetImageAverageColor(ImgData, w, h),
-        pixels: CountSpecificColorPixels(ImgData.data,[255,255,255,255],false)
+        pixels: CountSpecificColorPixels(ImgData.data, [255, 255, 255, 255], true)
     }
 }
 
@@ -168,7 +169,7 @@ function RemoveBlanks(imageData, imgWidth, imgHeight) {
                 }
             }
             // all image is white
-            return null; 
+            return null;
         },
         scanX = function (fromLeft) {
             var offset = fromLeft ? 1 : -1;
@@ -182,7 +183,7 @@ function RemoveBlanks(imageData, imgWidth, imgHeight) {
                 }
             }
             // all image is white
-            return null; 
+            return null;
         };
     return {
         cropTop: scanY(true),
@@ -195,7 +196,163 @@ function RemoveBlanks(imageData, imgWidth, imgHeight) {
     // cropLeft is the last leftmost white column.
     // cropRight is the last rightmost white column.
 }
+
+// 画边框
+async function DrawLine(ImageData, matrix, leftX, rightX, topY, bottomY) {
+    var data = ImageData.data;
+    DrawHorizontalLine(data, matrix, topY);
+    DrawHorizontalLine(data, matrix, bottomY);
+    DrawVerticalLine(data, matrix, leftX);
+    DrawVerticalLine(data, matrix, rightX);
+    return ImageData;
+}
+// 获取边框信息
+async function GetCutInfo(ImageData, matrix, w, h) {
+    var data = ImageData.data;
+    var CollidedArr = await VerticalLineCollide(ImageData, matrix);
+    var leftX = CollidedArr[0] - 1
+    var rightX = CollidedArr[CollidedArr.length - 1]
+    var topY = HorizontalCollide(data, w, h, "top");
+    var bottomY = HorizontalCollide(data, w, h, "bottom");
+    return {
+        leftX: leftX < 0 ? 0 : leftX,
+        rightX: rightX < 0 ? 0 : rightX,
+        topY: topY < 0 ? 0 : topY,
+        bottomY: bottomY < 0 ? 0 : bottomY
+    };
+}
+// 初始化Matrix
+function InitBinaryArr(w, h) {
+    var Matrix = [];
+    for (var row = 0; row < h; row++) {
+        var rowArr = [];
+        for (var col = 0; col < w; col++) {
+            var index = row * w + col;
+            rowArr.push(index);
+        }
+        Matrix.push(rowArr);
+    }
+    return Matrix;
+}
+// 画横线
+function DrawHorizontalLine(data, matrix, y) {
+    var w = matrix[0].length
+    var col = 0;
+    while (col < y) {
+        col++;
+    }
+    for (var index = col * w; index < (col + 1) * w; index++) {
+        data[index * 4] = 0;
+        data[index * 4 + 1] = 0;
+        data[index * 4 + 2] = 0;
+        data[index * 4 + 3] = 255;
+    }
+}
+// 画竖线
+function DrawVerticalLine(data, Matrix, ColIndex) {
+    for (var rowIndex = 0; rowIndex < Matrix.length; rowIndex++) {
+        var PixelIndex = Matrix[rowIndex][ColIndex];
+        data[PixelIndex * 4] = 0;
+        data[PixelIndex * 4 + 1] = 0;
+        data[PixelIndex * 4 + 2] = 0;
+        data[PixelIndex * 4 + 3] = 255;
+    }
+}
+// 框出竖直边框
+async function VerticalLineCollide({
+    data
+}, Matrix, r = 255, g = 255, b = 255) {
+    var CollidedArr = []
+    for (var X = 0; X < Matrix[0].length; X++) {
+        var arr = GetIndexArrOfVertical(Matrix, X)
+        var collided = arr.map(index => index * 4).some(i => {
+            return data[i] !== r && data[i + 1] !== g && data[i + 2] !== b && data[i + 3] !== 0
+        })
+        if (collided) {
+            CollidedArr.push(X + 1)
+        }
+    }
+    return CollidedArr
+}
+// 获取位于图片水平方向X像素的垂直数组
+function GetIndexArrOfVertical(Matrix, X) {
+    var H = Matrix.length
+    var arr = []
+    for (var rowIndex = 0; rowIndex < H; rowIndex++) {
+        // debugger
+        arr.push(Matrix[rowIndex][X])
+    }
+    return arr
+}
+// 框出水平边距
+function HorizontalCollide(data, w, h, from = "top", r = 255, g = 255, b = 255) {
+    var enableSearch = true;
+    var y = 0;
+    var pixelsIndexArr = [];
+    if (from.toLowerCase() === "top") {
+        while (y < h && enableSearch) {
+            // y++;
+            for (var index = ++y * w; index < (y + 1) * w; index++) {
+                if (data[index * 4] !== r && data[index * 4 + 1] !== g && data[index * 4 + 2] !== b && data[index * 4 + 3] !== 0) {
+                    enableSearch = false;
+                    pixelsIndexArr.push(index * 4);
+                    break;
+                }
+            }
+        }
+    } else if (from.toLowerCase() === "bottom") {
+        var y = h;
+        while (y > 0 && enableSearch) {
+            // y--;
+            for (var index = --y * w - 1; index > (y - 1) * w; index--) {
+                if (data[index * 4] !== r && data[index * 4 + 1] !== g && data[index * 4 + 2] !== b && data[index * 4 + 3] !== 0) {
+                    enableSearch = false;
+                    pixelsIndexArr.push(index * 4);
+                    break;
+                }
+            }
+        }
+    }
+    return y;
+}
+async function CutImage(ImageData, leftX, rightX, topY, bottomY) {
+    var canvas = await Canvas.createCanvas(100, 100);
+    var ctx = await canvas.getContext("2d");
+    ctx.putImageData(ImageData, 0, 0)
+    var x = leftX - 1 < 0 ? 0 : leftX - 1;
+    var y = topY - 1 < 0 ? 0 : topY - 1;
+    var w = (rightX - leftX) < 0 ? 0 : rightX - leftX;
+    var h = (bottomY - topY) < 0 ? 0 : bottomY - topY;
+    console.log({
+        x,
+        y,
+        w,
+        h
+    })
+    var cropImage = ctx.getImageData(x, y, w, h); 
+    return cropImage; 
+}
+async function ScaleImage(ImageData,MaxWidth,MaxHeight){
+    var w = ImageData.width
+    var h = ImageData.height
+    var canvas = await Canvas.createCanvas(w, h);
+    var WidthPercent = MaxWidth/w;
+    var HeightPrecent = MaxWidth/h;
+    var ctx = await canvas.getContext("2d");
+    ctx.putImageData(ImageData,0,0)
+    console.log({w,h,WidthPercent,HeightPrecent})
+
+    var canvas2 = await Canvas.createCanvas(MaxWidth, MaxHeight);
+    var ctx2 = await canvas2.getContext("2d");
+    ctx2.drawImage(canvas,0,0,w,h,0,0,w*WidthPercent, h*HeightPrecent)
+    var scaleImage = ctx2.getImageData(0, 0, w*WidthPercent, h*HeightPrecent); 
+    return scaleImage
+}
 module.exports = {
+    GetCutInfo,
+    ScaleImage,
+    InitBinaryArr,
+    CutImage,
     Binarization,
     RevertImageColor,
     RemoveBlanks,
