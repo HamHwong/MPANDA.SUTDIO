@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-23 14:28:22
- * @LastEditTime: 2020-12-24 13:33:48
+ * @LastEditTime: 2021-02-01 17:57:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/utils/images/index.js
@@ -130,10 +130,10 @@ function GetImageAverageColor(ImageData, w, h) {
     };
 }
 
-function GetImageInfo(ImgData, w, h) {
+function GetImageInfo(ImgData, w, h) { 
     return {
         averageColor: GetImageAverageColor(ImgData, w, h),
-        pixels: CountSpecificColorPixels(ImgData.data, [255, 255, 255, 255], true)
+        pixels: CountSpecificColorPixels(ImgData.data, [255, 255, 255], true)
     }
 }
 
@@ -337,15 +337,21 @@ async function ScaleImage(ImageData,MaxWidth,MaxHeight){
     var h = ImageData.height
     var canvas = await Canvas.createCanvas(w, h);
     var WidthPercent = MaxWidth/w;
-    var HeightPrecent = MaxWidth/h;
+    var HeightPercent = MaxWidth/h;
     var ctx = await canvas.getContext("2d");
     ctx.putImageData(ImageData,0,0)
-    console.log({w,h,WidthPercent,HeightPrecent})
+    //console.log({w,h,WidthPercent,HeightPercent})
 
     var canvas2 = await Canvas.createCanvas(MaxWidth, MaxHeight);
-    var ctx2 = await canvas2.getContext("2d");
-    ctx2.drawImage(canvas,0,0,w,h,0,0,w*WidthPercent, h*HeightPrecent)
-    var scaleImage = ctx2.getImageData(0, 0, w*WidthPercent, h*HeightPrecent); 
+    var ctx2 = await canvas2.getContext("2d"); 
+    var data = ctx2.getImageData(0, 0, w, h)
+    // console.log(data.data.length)
+    // for(var i = 0 ; i< data.data.length;i+=4){
+    //     data.data[i+3] = 0
+    // }
+    ctx2.drawImage(canvas,0,0,w,h,0,0,w*WidthPercent, h*HeightPercent)
+    var scaleImage = ctx2.getImageData(0, 0, w*WidthPercent, h*HeightPercent); 
+    console.log(scaleImage.data)
     return scaleImage
 }
 module.exports = {

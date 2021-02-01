@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-21 13:27:17
- * @LastEditTime: 2020-12-24 14:24:53
+ * @LastEditTime: 2021-02-01 17:53:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/business/homepage/index.js
@@ -104,7 +104,7 @@ async function LoadBinarizationImage(fileRecord){
             let {
                 averageColor,
                 pixels
-            } = imgUtils.GetImageInfo(BinarizationImageData, w, h);
+            } = imgUtils.GetImageInfo(BinarizationImageData, w, h); 
             console.log({leftX, rightX, topY, bottomY},pixels)
             // // 高亮反转
             // if (averageColor.r > 200 && averageColor.g > 200 && averageColor.b > 200) {
