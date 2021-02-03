@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-02-03 13:49:00
- * @LastEditTime: 2021-02-03 14:11:54
+ * @LastEditTime: 2021-02-03 16:11:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/EliteSource/index.js
@@ -23,13 +23,13 @@ router.get('/DMS/captchaImage', (ctx, next) => {
         'mockIndexData': 1
     })
 })
-router.get('/DMS/login', (ctx, next) => {
+router.post('/DMS/login', (ctx, next) => {
     ctx.send(user.login)
 })
-router.get('/DMS/logout', (ctx, next) => {
+router.post('/DMS/logout', (ctx, next) => {
     ctx.send(user.logout)
 })
-router.get('/DMS/dealer/list', (ctx, next) => {
+router.post('/DMS/dealer/list', (ctx, next) => {
     ctx.send(dealer.list)
 })
 router.get('/DMS/dealer/detail', (ctx, next) => {
