@@ -1,14 +1,14 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 13:53:40
- * @LastEditTime: 2020-12-21 13:07:26
+ * @LastEditTime: 2021-02-03 13:54:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/router.js
  */
 
 var Router = require('koa-router'); 
-var routers = require("./api/index")
+var routers = require("./controllers/index")
 var mainRouter = new Router(
   {prefix:'/api'}
 ); 

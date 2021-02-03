@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-21 13:27:17
- * @LastEditTime: 2021-02-01 17:53:02
+ * @LastEditTime: 2021-02-02 10:16:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/business/homepage/index.js
@@ -96,8 +96,8 @@ async function LoadBinarizationImage(fileRecord){
             // 检测二值化后的平均颜色，如果大于200，就反向图片颜色后再读取
             var BinarizationImageData = imgUtils.Binarization(data);
             const {leftX, rightX, topY, bottomY} = await imgUtils.GetCutInfo(BinarizationImageData,imgUtils.InitBinaryArr(w,h),w,h)
-            BinarizationImageData= await imgUtils.CutImage(BinarizationImageData,leftX, rightX, topY, bottomY)
-            BinarizationImageData= await imgUtils.ScaleImage(BinarizationImageData,50,50)
+            // BinarizationImageData= await imgUtils.CutImage(BinarizationImageData,leftX, rightX, topY, bottomY)
+            // BinarizationImageData= await imgUtils.ScaleImage(BinarizationImageData,50,50)
             // console.log(BinarizationImageData.data.filter(i=>i))
             w = rightX - leftX
             h = bottomY - topY

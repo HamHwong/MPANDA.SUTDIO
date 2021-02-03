@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-23 14:28:22
- * @LastEditTime: 2021-02-01 17:57:02
+ * @LastEditTime: 2021-02-02 10:15:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/utils/images/index.js
@@ -83,11 +83,11 @@ function CountSpecificColorPixels(arr, [r = 255, g = 255, b = 255], exclude = tr
     var count = 0
     for (var i = 0; i < arr.length; i += 4) {
         if (exclude) {
-            if (!(arr[i] === r && arr[i + 1] === g && arr[i + 2] === b)) {
+            if (arr[i] !== r && arr[i + 1] !== g && arr[i + 2] !== b && arr[i + 3] !== 0 ) {
                 count++
             }
         } else {
-            if (arr[i] === r && arr[i + 1] === g && arr[i + 2] === b) {
+            if (arr[i] === r && arr[i + 1] === g && arr[i + 2] === b && arr[i + 3] !== 0 ) {
                 count++
             }
         }

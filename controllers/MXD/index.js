@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-21 00:23:45
- * @LastEditTime: 2020-12-24 13:34:47
+ * @LastEditTime: 2021-02-03 13:53:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/api/index.js
@@ -10,10 +10,10 @@ let {
   QueryImage,
   InitAllStringXML, 
   InitAllImage
-} = require('../../controls/MXD')
+} = require('../../services/MXD')
 let {
   UploadImage 
-} = require('../../controls/Images')
+} = require('../../services/Images')
 let router = require('koa-router')()
 var response = require('../../model/response.model') 
 //上传图到MXD专用目录

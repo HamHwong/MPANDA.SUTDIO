@@ -11,7 +11,7 @@ let {
   GetImageFileByID,
   BinarizationImage, 
   ReadBinarizationImageById, 
-} = require('../../controls/Images')
+} = require('../../services/Images')
 
 let router = require('koa-router')()
 var response = require('../../model/response.model') 
