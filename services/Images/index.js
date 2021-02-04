@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-21 13:27:17
- * @LastEditTime: 2021-02-02 10:16:54
+ * @LastEditTime: 2021-02-04 10:32:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/business/homepage/index.js
@@ -89,15 +89,15 @@ async function LoadBinarizationImage(fileRecord){
             ctx.drawImage(img, 0, 0)
             let data = ctx.getImageData(0, 0, w, h);
             // 抠图前备份原图
-            var originCanvas = Canvas.createCanvas(w, h)
-            var originCtx = originCanvas.getContext("2d")
-            originCtx.drawImage(img, 0, 0)
-            var originData = originCtx.getImageData(0, 0, w, h);
+            // var originCanvas = Canvas.createCanvas(w, h)
+            // var originCtx = originCanvas.getContext("2d")
+            // originCtx.drawImage(img, 0, 0)
+            // var originData = originCtx.getImageData(0, 0, w, h);
             // 检测二值化后的平均颜色，如果大于200，就反向图片颜色后再读取
             var BinarizationImageData = imgUtils.Binarization(data);
             const {leftX, rightX, topY, bottomY} = await imgUtils.GetCutInfo(BinarizationImageData,imgUtils.InitBinaryArr(w,h),w,h)
-            // BinarizationImageData= await imgUtils.CutImage(BinarizationImageData,leftX, rightX, topY, bottomY)
-            // BinarizationImageData= await imgUtils.ScaleImage(BinarizationImageData,50,50)
+            BinarizationImageData= await imgUtils.CutImage(BinarizationImageData,leftX, rightX, topY, bottomY)
+            BinarizationImageData= await imgUtils.ScaleImage(BinarizationImageData,50,50)
             // console.log(BinarizationImageData.data.filter(i=>i))
             w = rightX - leftX
             h = bottomY - topY
@@ -105,16 +105,18 @@ async function LoadBinarizationImage(fileRecord){
                 averageColor,
                 pixels
             } = imgUtils.GetImageInfo(BinarizationImageData, w, h); 
-            console.log({leftX, rightX, topY, bottomY},pixels)
+            // console.log({leftX, rightX, topY, bottomY},pixels)
             // // 高亮反转
-            // if (averageColor.r > 200 && averageColor.g > 200 && averageColor.b > 200) {
-            //     ctx.drawImage(img, 0, 0)
-            //     data = ctx.getImageData(0, 0, w, h);
-            //     BinarizationImageData = imgUtils.Binarization(imgUtils.RevertImageColor(data), 255 / 8);
-            // }
+            if (averageColor.r > 200 && averageColor.g > 200 && averageColor.b > 200) {
+                ctx.drawImage(img, 0, 0)
+                data = ctx.getImageData(0, 0, w, h);
+                BinarizationImageData = imgUtils.Binarization(imgUtils.RevertImageColor(data), 255 / 8);
+            }
             // 根据二值抠图 
             // var DisplayImageData = imgUtils.CutImageByBinarizationImage(originData, BinarizationImageData) 
             var DisplayImageData = BinarizationImageData
+            canvas.width = DisplayImageData.width
+            canvas.height = DisplayImageData.height
             // 重绘处理后的图片
             await ctx.putImageData(DisplayImageData, 0, 0);
             // 导出Base64

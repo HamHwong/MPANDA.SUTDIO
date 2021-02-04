@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-23 14:28:22
- * @LastEditTime: 2021-02-02 10:15:07
+ * @LastEditTime: 2021-02-04 10:29:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/utils/images/index.js
@@ -316,19 +316,19 @@ function HorizontalCollide(data, w, h, from = "top", r = 255, g = 255, b = 255) 
     return y;
 }
 async function CutImage(ImageData, leftX, rightX, topY, bottomY) {
-    var canvas = await Canvas.createCanvas(100, 100);
+    var canvas = await Canvas.createCanvas(ImageData.width, ImageData.height);
     var ctx = await canvas.getContext("2d");
     ctx.putImageData(ImageData, 0, 0)
     var x = leftX - 1 < 0 ? 0 : leftX - 1;
     var y = topY - 1 < 0 ? 0 : topY - 1;
     var w = (rightX - leftX) < 0 ? 0 : rightX - leftX;
     var h = (bottomY - topY) < 0 ? 0 : bottomY - topY;
-    console.log({
-        x,
-        y,
-        w,
-        h
-    })
+    // console.log({
+    //     x,
+    //     y,
+    //     w,
+    //     h
+    // })
     var cropImage = ctx.getImageData(x, y, w, h); 
     return cropImage; 
 }
@@ -340,18 +340,22 @@ async function ScaleImage(ImageData,MaxWidth,MaxHeight){
     var HeightPercent = MaxWidth/h;
     var ctx = await canvas.getContext("2d");
     ctx.putImageData(ImageData,0,0)
-    //console.log({w,h,WidthPercent,HeightPercent})
-
-    var canvas2 = await Canvas.createCanvas(MaxWidth, MaxHeight);
+    // console.log({w,h,WidthPercent,HeightPercent})
+    // console.log(w*scalePercent, h*scalePercent)
+    var scalePercent = 0;
+    if(w>=MaxWidth){
+        //w = MaxWidth
+        scalePercent = WidthPercent
+    }else{
+        //h = MaxHeight
+        scalePercent = HeightPercent
+    }
+    var canvas2 = await Canvas.createCanvas(w*scalePercent, h*scalePercent);
     var ctx2 = await canvas2.getContext("2d"); 
-    var data = ctx2.getImageData(0, 0, w, h)
-    // console.log(data.data.length)
-    // for(var i = 0 ; i< data.data.length;i+=4){
-    //     data.data[i+3] = 0
-    // }
-    ctx2.drawImage(canvas,0,0,w,h,0,0,w*WidthPercent, h*HeightPercent)
-    var scaleImage = ctx2.getImageData(0, 0, w*WidthPercent, h*HeightPercent); 
-    console.log(scaleImage.data)
+    ctx2.drawImage(canvas,0,0,ImageData.width,ImageData.height,0,0,w*scalePercent, h*scalePercent)
+    var scaleImage = ctx2.getImageData(0, 0, w*scalePercent, h*scalePercent); 
+    // console.log(scalePercent)
+    // console.log(w*scalePercent, h*scalePercent)
     return scaleImage
 }
 module.exports = {
