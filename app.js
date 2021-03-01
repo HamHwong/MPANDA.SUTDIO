@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 13:53:40
- * @LastEditTime: 2020-12-17 17:44:48
+ * @LastEditTime: 2021-03-01 14:28:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/app.js
@@ -33,11 +33,11 @@ app.use(koaBody({
 }));
 // 解析请求体
 app.use(bodyParser()); 
-
 // Mount MiddleWare
 middleware(app)
 // Mount Utils
 utils(app)
+// CORS
 app.use(cors());
 // Setup Main App
 app

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-07 10:55:23
- * @LastEditTime: 2020-12-24 14:17:23
+ * @LastEditTime: 2021-03-01 14:32:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/utils/mongodb/index.js
@@ -12,6 +12,7 @@ const {
   username,
   password,
   host,
+  dbName,
   port
 } = config.mongoDB
 var url = `mongodb://${username}:${password}@${host}:${port}/?readPreference=primary&ssl=false`;
@@ -24,7 +25,7 @@ module.exports = {
           rej(err)
           throw err;
         }
-        var dbo = db.db('Mpanda');
+        var dbo = db.db(dbName);
         const result = await queryFunc(dbo);
         // console.log("数据库连接已创建!");
         res(result);

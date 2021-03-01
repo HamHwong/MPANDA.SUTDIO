@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-23 14:28:22
- * @LastEditTime: 2021-02-04 10:29:34
+ * @LastEditTime: 2021-02-04 17:02:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/utils/images/index.js
@@ -322,13 +322,7 @@ async function CutImage(ImageData, leftX, rightX, topY, bottomY) {
     var x = leftX - 1 < 0 ? 0 : leftX - 1;
     var y = topY - 1 < 0 ? 0 : topY - 1;
     var w = (rightX - leftX) < 0 ? 0 : rightX - leftX;
-    var h = (bottomY - topY) < 0 ? 0 : bottomY - topY;
-    // console.log({
-    //     x,
-    //     y,
-    //     w,
-    //     h
-    // })
+    var h = (bottomY - topY) < 0 ? 0 : bottomY - topY; 
     var cropImage = ctx.getImageData(x, y, w, h); 
     return cropImage; 
 }
@@ -339,17 +333,17 @@ async function ScaleImage(ImageData,MaxWidth,MaxHeight){
     var WidthPercent = MaxWidth/w;
     var HeightPercent = MaxWidth/h;
     var ctx = await canvas.getContext("2d");
-    ctx.putImageData(ImageData,0,0)
-    // console.log({w,h,WidthPercent,HeightPercent})
-    // console.log(w*scalePercent, h*scalePercent)
+    ctx.putImageData(ImageData,0,0) 
     var scalePercent = 0;
-    if(w>=MaxWidth){
-        //w = MaxWidth
-        scalePercent = WidthPercent
-    }else{
-        //h = MaxHeight
-        scalePercent = HeightPercent
-    }
+    // if(w>=MaxWidth){
+    //     // w = MaxWidth
+    //     scalePercent = WidthPercent
+    // }else{
+    //     //h = MaxHeight
+    //     scalePercent = HeightPercent
+    // }
+
+    scalePercent = WidthPercent>HeightPercent?WidthPercent:HeightPercent
     var canvas2 = await Canvas.createCanvas(w*scalePercent, h*scalePercent);
     var ctx2 = await canvas2.getContext("2d"); 
     ctx2.drawImage(canvas,0,0,ImageData.width,ImageData.height,0,0,w*scalePercent, h*scalePercent)

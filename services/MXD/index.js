@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-21 13:27:17
- * @LastEditTime: 2020-12-24 14:24:53
+ * @LastEditTime: 2021-02-04 16:55:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/business/homepage/index.js
@@ -15,16 +15,17 @@ const {mongoDB:{MXD:MXDConfig}} = require('../../config')
 async function QueryImage(formdata) {
     let fileRecord = await BinarizationImage(formdata.file)
     let QueryPixels = fileRecord.pixels
+    console.log('查询', fileRecord)
     console.log('查询像素', fileRecord.pixels)
     let result = await db.Query(MXDConfig.ImageCollection, {
         $and: [{
                 'pixels': {
-                    $gte: QueryPixels,
+                    $gte: QueryPixels-150,
                 }
             },
             {
                 'pixels': {
-                    $lte: QueryPixels
+                    $lte: QueryPixels+150
                 }
             }
         ]

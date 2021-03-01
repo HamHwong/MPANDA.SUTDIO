@@ -82,6 +82,7 @@
     "is-typedarray": "^1.0.0",
     "is-yarn-global": "^0.3.0",
     "json-buffer": "^3.0.0",
+    "jsonwebtoken": "^8.5.1",
     "keygrip": "^1.1.0",
     "keyv": "^3.1.0",
     "koa": "^2.13.0",

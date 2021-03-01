@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-21 13:27:17
- * @LastEditTime: 2021-02-04 10:32:20
+ * @LastEditTime: 2021-02-04 16:40:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/business/homepage/index.js
@@ -104,12 +104,12 @@ async function LoadBinarizationImage(fileRecord){
             let {
                 averageColor,
                 pixels
-            } = imgUtils.GetImageInfo(BinarizationImageData, w, h); 
+            } = imgUtils.GetImageInfo(BinarizationImageData, BinarizationImageData.width, BinarizationImageData.height); 
             // console.log({leftX, rightX, topY, bottomY},pixels)
             // // 高亮反转
             if (averageColor.r > 200 && averageColor.g > 200 && averageColor.b > 200) {
                 ctx.drawImage(img, 0, 0)
-                data = ctx.getImageData(0, 0, w, h);
+                data = ctx.getImageData(0, 0, BinarizationImageData.width, BinarizationImageData.height);
                 BinarizationImageData = imgUtils.Binarization(imgUtils.RevertImageColor(data), 255 / 8);
             }
             // 根据二值抠图 
@@ -123,8 +123,8 @@ async function LoadBinarizationImage(fileRecord){
             var result = new imageFile({
                 fileName: 'data.png',
                 suffix: 'png',
-                width: w,
-                height: h
+                width: DisplayImageData.width,
+                height: DisplayImageData.height
             })
             result.pixels = pixels;
             result.base64 = canvas.toDataURL('image/png')
