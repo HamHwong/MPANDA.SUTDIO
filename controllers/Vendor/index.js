@@ -1,12 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2021-03-19 11:23:26
- * @LastEditTime: 2021-03-19 15:14:35
+ * @LastEditTime: 2021-03-24 14:10:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/controllers/Vendor/index.js
  */
 const https = require('https')
+const http = require('http')
 const axios = require('axios')
 var response = require('../../model/response.model')
 let router = require('koa-router')()
@@ -26,7 +27,7 @@ router.get('/Vendor/Bing/GetDailyBG', async (ctx, next) => {
             res.on('end', () => {
                 try {
                     const parsedData = JSON.parse(rawData);
-                    console.log(parsedData);
+                    // console.log(parsedData);
                     ctx.send(new response(parsedData))
                     resolve(parsedData)
                 } catch (e) {
@@ -36,5 +37,32 @@ router.get('/Vendor/Bing/GetDailyBG', async (ctx, next) => {
             })
         }).end()
     }) 
+})
+router.get('/Vendor/Other/GetDailyWords',async (ctx,next)=>{
+    //http://api.lkblog.net/ws/api.php
+    var options = {
+        host: 'api.lkblog.net',
+        path: '/ws/api.php',
+        method: 'GET',
+    } 
+    await new Promise((resolve,rej)=>{
+        http.get(options,(res)=>{
+            var rawData = ''
+            res.on('data', (d) => {
+                rawData += d
+            })
+            res.on('end', () => {
+                try {
+                    const parsedData = JSON.parse(rawData);
+                    // console.log(parsedData);
+                    ctx.send(new response(parsedData))
+                    resolve(parsedData)
+                } catch (e) {
+                    console.error(e.message);
+                    rej(e.message)
+                }
+            })
+        }).end()
+    })
 })
 module.exports = router
