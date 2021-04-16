@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-07 10:55:23
- * @LastEditTime: 2021-03-01 14:31:59
+ * @LastEditTime: 2021-04-16 16:48:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/config.js
@@ -12,7 +12,7 @@ const static = static_(
   path.join(__dirname, './static')
 )
 // Server Port Settings
-var port = '8100';
+var port = 8100;
 // MongoDB Settings
 var mongoDB = {
   host:'45.77.185.26',
