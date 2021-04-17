@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 13:53:40
- * @LastEditTime: 2021-03-01 14:28:09
+ * @LastEditTime: 2021-04-17 15:13:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/app.js
@@ -24,7 +24,7 @@ const {
 } = config
 
 app.use(async (ctx, next) => {
-  // console.log(`Process ${ctx.request.method} ${ctx.request.url}...`);
+  console.log(`Process ${ctx.request.method} ${ctx.request.url}...`);
   await next();
 });
 // 文件上传，注意书写的位置很重要，否则无法上传
