@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-04-16 16:45:31
- * @LastEditTime: 2021-04-17 23:25:39
+ * @LastEditTime: 2021-04-18 13:15:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/utils/websocket/index.js
@@ -38,6 +38,7 @@ module.exports = (port) => {
         sentToOthers(JSON.stringify(new defaultEvent({$event:'$ws.event.leave',from:ws.userid})),this.connects,ws)
         // sentToOthers('$ws', this.connects, ws)
         // ws.send('客走了')
+        console.log('还有'+this.connects.length+'个连接')
       })
   }) 
 }
