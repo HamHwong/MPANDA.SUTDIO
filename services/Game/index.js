@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-04-13 14:55:49
- * @LastEditTime: 2021-04-13 17:07:41
+ * @LastEditTime: 2021-04-19 16:37:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/services/Game/index.js
@@ -21,14 +21,10 @@ async function init() {
     var result = {}
     var proms = arr.map(async function (path) {
       var rawMeta = path.replace(assetPath, '');
-      await readFilesASBase64(path).then(data => {
-        // generateFileTree(rawMeta.split('/'), result, "data:"+MIME.getType(path)+";base64,"+data) 
+      await readFilesASBase64(path).then(data => { 
         var rawArr = rawMeta.split('/')
-        var ID = rawArr.splice(0, rawArr.length - 1).join('.')
-        // console.log(rawMeta)
-        // result[ID] = ID
-        if(!result[ID]) result[ID] = []
-        // if (!result[ID].Sprints) result[ID].Sprints = []
+        var ID = rawArr.splice(0, rawArr.length - 1).join('.') 
+        if(!result[ID]) result[ID] = [] 
         result[ID].push("data:" + MIME.getType(path) + ";base64," + data)
       })
       return result
@@ -37,17 +33,7 @@ async function init() {
       res(result)
     })
   })
-}
-
-//  function generateFileTree(Arr, Node, Base64) {
-//    if (Arr.length <= 1) { 
-//     Node.base64 = Base64 
-//    } else {
-//      var currentPath = Arr.shift()
-//      if (!Node[currentPath]) Node[currentPath] = {}
-//      generateFileTree(Arr, Node[currentPath], Base64)
-//    }
-//  }
+} 
 module.exports = {
   init
 }
