@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-19 11:23:26
- * @LastEditTime: 2021-03-24 14:10:50
+ * @LastEditTime: 2021-04-20 15:39:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/controllers/Vendor/index.js
@@ -36,7 +36,9 @@ router.get('/Vendor/Bing/GetDailyBG', async (ctx, next) => {
                 }
             })
         }).end()
-    }) 
+    }) .catch(e=>{
+        
+    })
 })
 router.get('/Vendor/Other/GetDailyWords',async (ctx,next)=>{
     //http://api.lkblog.net/ws/api.php
@@ -63,6 +65,8 @@ router.get('/Vendor/Other/GetDailyWords',async (ctx,next)=>{
                 }
             })
         }).end()
+    }).catch(e=>{
+        
     })
 })
 module.exports = router
