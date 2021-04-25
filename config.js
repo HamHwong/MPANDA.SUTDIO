@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-07 10:55:23
- * @LastEditTime: 2021-04-18 13:52:24
+ * @LastEditTime: 2021-04-25 22:34:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/config.js
@@ -19,7 +19,7 @@ var mongoDB = {
   host:'45.77.185.26',
   // host:'localhost',
   dbName:'Mpanda',
-  port:8111,
+  port:8112,
   username:'admin',
   password:'hh0504hH!',
   MXD:{
