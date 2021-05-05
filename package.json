@@ -25,6 +25,7 @@
     "canvas": "^2.6.1",
     "chalk": "^3.0.0",
     "ci-info": "^2.0.0",
+    "class-transformer": "^0.4.0",
     "cli-boxes": "^2.2.1",
     "clone-response": "^1.0.2",
     "co": "^4.6.0",
@@ -98,6 +99,7 @@
     "log4js": "^6.3.0",
     "lowercase-keys": "^2.0.0",
     "make-dir": "^3.1.0",
+    "mavon-editor": "^2.9.1",
     "media-typer": "^0.3.0",
     "mime": "^2.4.7",
     "mime-db": "^1.44.0",
@@ -159,6 +161,7 @@
     "ws": "^7.4.4",
     "xdg-basedir": "^4.0.0",
     "xml2js": "^0.4.23",
+    "xss": "^1.0.8",
     "ylru": "^1.2.1"
   },
   "scripts": {

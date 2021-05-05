@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 13:53:40
- * @LastEditTime: 2021-04-17 15:13:12
+ * @LastEditTime: 2021-05-04 20:10:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/app.js
@@ -17,7 +17,6 @@ var cors = require('koa2-cors');
 
 const bodyParser = require('koa-bodyparser');
 const koaBody = require('koa-body');
-
 const {
   port,
   static
@@ -34,9 +33,9 @@ app.use(koaBody({
 // 解析请求体
 app.use(bodyParser()); 
 // Mount MiddleWare
-middleware(app)
+middleware(app);
 // Mount Utils
-utils(app)
+utils(app);
 // CORS
 app.use(cors());
 // Setup Main App

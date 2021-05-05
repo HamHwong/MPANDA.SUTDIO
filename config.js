@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-07 10:55:23
- * @LastEditTime: 2021-04-25 22:34:38
+ * @LastEditTime: 2021-05-05 15:51:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/config.js
@@ -18,8 +18,8 @@ var wssPort = 8110;
 var mongoDB = {
   host:'45.77.185.26',
   // host:'localhost',
-  dbName:'Mpanda',
-  port:8112,
+  dbName:'Mpanda_Studio',
+  port:27017,
   username:'admin',
   password:'hh0504hH!',
   MXD:{
