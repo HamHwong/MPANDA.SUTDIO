@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-21 13:25:18
- * @LastEditTime: 2020-12-24 14:18:09
+ * @LastEditTime: 2021-05-06 16:11:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/utils/files/index.js
@@ -10,7 +10,7 @@
 const fs = require('fs')
 const path = require('path')
 const uuid = require('uuid');
-const fileRecord = require('../../model/file.records.model')
+const fileRecord = require('../../model/File')
 const MIME = require('mime')
 /**
  * 检查并且创建目录 

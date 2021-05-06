@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-19 11:23:26
- * @LastEditTime: 2021-04-20 15:39:46
+ * @LastEditTime: 2021-05-06 15:22:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/controllers/Vendor/index.js
@@ -9,8 +9,9 @@
 const https = require('https')
 const http = require('http')
 const axios = require('axios')
-var response = require('../../model/response.model')
+var response = require('../../model/Response')
 let router = require('koa-router')()
+
 router.get('/Vendor/Bing/GetDailyBG', async (ctx, next) => {
     var options = {
         host: 'cn.bing.com',

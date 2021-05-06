@@ -7,7 +7,7 @@
  * @FilePath: /MPANDA.SUTDIO/business/homepage/index.js
  */ 
 const db = require('../../utils/mongodb') 
-const imageFile = require('../../model/image.records.model')
+const imageFile = require('../../model/ImageFile')
 const imgUtils = require('../../utils/images')
 const fileUtils = require('../../utils/files')
 const Bagpipe = require('bagpipe')

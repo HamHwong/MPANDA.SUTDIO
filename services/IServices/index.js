@@ -6,8 +6,7 @@
  * @Description: In User Settings Edit
  * @FilePath: \MPANDA.SUTDIO\services\IServices\index.js
  */
-const db = require('../../utils/mongodb')
-var { plainToClass } = require('class-transformer')
+const db = require('../../utils/mongodb') 
 var mongodb = require('mongodb')
 var ObjectID = mongodb.ObjectID
 class IService {

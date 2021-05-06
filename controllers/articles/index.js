@@ -8,14 +8,13 @@
  */
 
 let router = require('koa-router')()
-var response = require('../../model/response.model')
-const Service = require('../../services/articles')
-var { plainToClass } = require('class-transformer')
-const { Article } = require('../../model/Articles/article')
+var response = require('../../model/Response')
+const Service = require('../../services/articles') 
+const Article = require('../../model/Articles/article')
 const { isNull } = require('../../utils/common')
 var service = new Service.Article()
 router.post('/article/create', async (ctx, next) => {
-  var article = plainToClass(Article, ctx.request.body)
+  var article = Article.Convert(ctx.request.body)
   ctx.send(
     new response(
       await service.Create(article, (article) => {
@@ -32,7 +31,7 @@ router.post('/article/create', async (ctx, next) => {
 router.post('/article/update/:id', async (ctx, next) => {
   var { id } = ctx.params
 
-  var article = plainToClass(Article, ctx.request.body)
+  var article = Article.Convert(ctx.request.body)
   ctx.send(new response(await service.Update(id, article)))
 })
 router.get('/article/search/:keywords', async (ctx, next) => {

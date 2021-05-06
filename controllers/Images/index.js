@@ -14,7 +14,7 @@ let {
 } = require('../../services/Images')
 
 let router = require('koa-router')()
-var response = require('../../model/response.model') 
+var response = require('../../model/Response') 
 // 上传图片到固定目录
 router.post('/image/upload', async (ctx, next) => {
   var formdata = ctx.request.files;

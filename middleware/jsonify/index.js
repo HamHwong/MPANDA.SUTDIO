@@ -1,4 +1,12 @@
-const response = require("../../model/response.model")
+/*
+ * @Author: your name
+ * @Date: 2020-12-23 09:20:27
+ * @LastEditTime: 2021-05-06 16:10:16
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /MPANDA.SUTDIO/middleware/jsonify/index.js
+ */
+const Response = require("../../model/Response")
 
 module.exports = () => {
   function render(json) {
@@ -12,7 +20,7 @@ module.exports = () => {
       ctx.send = render.bind(ctx)
       await next()
     } catch (e) {
-      ctx.body = JSON.stringify(new response().GetError(String(e.stack)))  
+      ctx.body = JSON.stringify(new Response().GetError(String(e.stack)))  
       ctx.utils.logger.info(String(e.stack))
     }
   }

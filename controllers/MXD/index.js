@@ -15,7 +15,7 @@ let {
   UploadImage 
 } = require('../../services/Images')
 let router = require('koa-router')()
-var response = require('../../model/response.model') 
+var response = require('../../model/Response') 
 //上传图到MXD专用目录
 router.post('/MapleStory/image/upload', async (ctx, next) => {
   var path = '/Upload_Files/MXD/'
