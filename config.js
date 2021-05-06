@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-07 10:55:23
- * @LastEditTime: 2021-05-05 17:13:21
+ * @LastEditTime: 2021-05-06 20:59:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/config.js
@@ -19,9 +19,10 @@ var mongoDB = {
   host:'45.77.185.26',
   // host:'localhost',
   dbName:'Mpanda_Studio',
+  authDBName:'Mpanda_Studio',
   port:27017,
-  username:'mpanda',
-  password:'a61481395',
+  username:'Mpanda',
+  password:'hh0504hH!',
   MXD:{
     StringCollection:'ItemStrings',
     ImageCollection:'Attachments'

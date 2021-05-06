@@ -1,15 +1,16 @@
 /*
  * @Author: your name
  * @Date: 2020-12-07 10:55:23
- * @LastEditTime: 2021-05-04 21:56:42
+ * @LastEditTime: 2021-05-06 20:59:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/utils/mongodb/index.js
  */
 var client = require('mongodb').MongoClient
 var config = require('../../config')
-const { username, password, host, dbName, port } = config.mongoDB
-var url = `mongodb://${username}:${password}@${host}:${port}/?readPreference=primary&ssl=false`
+const { username, password, host, dbName, port,authDBName } = config.mongoDB
+var url = `mongodb://${username}:${password}@${host}:${port}/?authSource=${authDBName}&readPreference=primary&ssl=false`
+
 var mongodb = require('mongodb')
 const { isNull } = require('../../utils/common')
 var ObjectID = mongodb.ObjectID
