@@ -17,3 +17,4 @@ class User extends IModel {
     super()
   }
 }
+module.exports = User
