@@ -50,10 +50,13 @@ function sign(signature, nonce, timestamp, echostr) {
   var str = [token, timestamp, nonce].sort().join('')
   var sha = sha1(str)
   console.log(sha,signature,echostr)
+  var result = ''
   if (sha == signature) {
-    return echostr+''
+    result= echostr+''
   } else {
-    return 'err'
+    result= 'err'
   }
+  console.log('result',result)
+  return result
 }
 module.exports = router
