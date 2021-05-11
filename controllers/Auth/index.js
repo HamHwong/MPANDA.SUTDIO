@@ -3,6 +3,8 @@ let router = require('koa-router')()
 const User = require('../../model/User')
 var response = require('../../model/Response')
 let {AuthService} = require('../../services/auth')
+var crypto = require('crypto');
+var querystring = require('querystring');
 router.post('/auth/login',async(ctx,next)=>{
   var user = User.Convert(ctx.request.body)
   var loginUser = await AuthService.login(user.account,user.password) 
@@ -17,12 +19,20 @@ router.post('/auth/login',async(ctx,next)=>{
 router.get('/oauth2/wechat/oauth2',async(ctx,next)=>{ 
   //ctx.send(new response(`result`) )
   const APPID = 'wx1945f85c362dd76f'
-  const REDIRECT_URI = 'mpanda.studio'
+  const REDIRECT_URI = 'mpanda.studio' 
   const path = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${APPID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=SCOPE&state=STATE#wechat_redirect`
   ctx.response.redirect(path);
 })
 router.get('/oauth2/wechat/check',async(ctx,next)=>{  
-  ctx.send(true)
+  //signature=6a401ffdd33d2f1ce0bf983b9bae3a4a3fe0e312
+  //echostr=7174475387871686655
+  //timestamp=1620731823
+  //nonce=137469566
+  // querystring.parse()
+  // console.log(ctx.request.query)
+  var echostr = ctx.request.query.echostr||''
+  // var sha1 = crypto.createHash('sha1').update(str).digest('hex').toUpperCase();
+  ctx.send(echostr)
 })
 
 module.exports = router
