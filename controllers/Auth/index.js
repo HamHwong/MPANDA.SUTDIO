@@ -31,11 +31,13 @@ router.get('/oauth2/wechat/check', async (ctx, next) => {
   // console.log(ctx.request.query)
   const { signature='', echostr='', timestamp='', nonce='' } = ctx.request.query
   var token = 'mpandastudio'
+  console.log(ctx.request.query)
   var arr = [token,timestamp,nonce].sort()
+  console.log(arr)
   var tmpStr = arr.join('')
-  console.log('aaa', echostr)
-  var sha1 = crypto.createHash('sha1').update(tmpStr).digest('hex').toUpperCase();
-  ctx.send(sha1)
+  var sha1 = crypto.createHash('sha1').update(tmpStr).digest('hex');
+  console.log(signature, sha1)
+  ctx.send(nonce)
 })
 
 module.exports = router
