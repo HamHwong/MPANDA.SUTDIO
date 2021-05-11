@@ -23,33 +23,18 @@ router.get('/oauth2/wechat/oauth2', async (ctx, next) => {
   const path = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${APPID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=SCOPE&state=STATE#wechat_redirect`
   ctx.response.redirect(path)
 })
-router.get('/oauth2/wechat/check', async (ctx, next) => {
-  //signature=6a401ffdd33d2f1ce0bf983b9bae3a4a3fe0e312
-  //echostr=7174475387871686655
-  //timestamp=1620731823
-  //nonce=137469566
-  // querystring.parse()
-  // console.log(ctx.request.query)
+router.get('/oauth2/wechat/check', async (ctx, next) => { 
   const {
     signature = '',
     echostr = '',
     timestamp = '',
     nonce = '',
-  } = ctx.request.query
-  // var token = 'mpandastudio'
-  // console.log(ctx.request.query)
-  // var arr = [token, timestamp, nonce].sort()
-  // console.log(arr)
-  // var tmpStr = arr.join('')
-  // var str = sha1(tmpStr)
-  // console.log(signature, str)
-
-  var a = sign(signature,
+  } = ctx.request.query 
+  ctx.send(sign(signature,
     nonce,
     timestamp,
     echostr
-    ) 
-  ctx.send(a)
+    ) )
 })
 function sign(signature, nonce, timestamp, echostr) {
   var signature = signature //微信加密签名
@@ -64,7 +49,7 @@ function sign(signature, nonce, timestamp, echostr) {
     */
   var str = [token, timestamp, nonce].sort().join('')
   var sha = sha1(str)
-  console.log(sha,signature)
+  console.log(sha,signature,echostr)
   if (sha == signature) {
     return echostr
   } else {
