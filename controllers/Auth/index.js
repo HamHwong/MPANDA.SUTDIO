@@ -34,7 +34,8 @@ router.get('/oauth2/wechat/check', async (ctx, next) => {
     nonce,
     timestamp,
     echostr
-    ) )
+    ))
+    ctx.res.end()
 })
 function sign(signature, nonce, timestamp, echostr) {
   var signature = signature //微信加密签名
