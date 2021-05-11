@@ -3,6 +3,7 @@ const User = require('../../model/User')
 var response = require('../../model/Response')
 let { AuthService } = require('../../services/auth')
 var crypto = require('crypto')
+var sha1 = require('sha1')
 var querystring = require('querystring')
 router.post('/auth/login', async (ctx, next) => {
   var user = User.Convert(ctx.request.body)
@@ -29,15 +30,45 @@ router.get('/oauth2/wechat/check', async (ctx, next) => {
   //nonce=137469566
   // querystring.parse()
   // console.log(ctx.request.query)
-  const { signature='', echostr='', timestamp='', nonce='' } = ctx.request.query
-  var token = 'mpandastudio'
-  console.log(ctx.request.query)
-  var arr = [token,timestamp,nonce].sort()
-  console.log(arr)
-  var tmpStr = arr.join('')
-  var sha1 = crypto.createHash('sha1').update(tmpStr).digest('hex');
-  console.log(signature, sha1)
-  ctx.send(nonce)
-})
+  const {
+    signature = '',
+    echostr = '',
+    timestamp = '',
+    nonce = '',
+  } = ctx.request.query
+  // var token = 'mpandastudio'
+  // console.log(ctx.request.query)
+  // var arr = [token, timestamp, nonce].sort()
+  // console.log(arr)
+  // var tmpStr = arr.join('')
+  // var str = sha1(tmpStr)
+  // console.log(signature, str)
 
+  var a = sign(signature,
+    nonce,
+    timestamp,
+    echostr
+    ) 
+  ctx.send(a)
+})
+function sign(signature, nonce, timestamp, echostr) {
+  var signature = signature //微信加密签名
+  var nonce = nonce //随机数
+  var timestamp = timestamp //时间戳
+  var echostr = echostr //随机字符串
+  var token = 'mpandastudio'
+  /*
+    1）将token、timestamp、nonce三个参数进行字典序排序
+        2）将三个参数字符串拼接成一个字符串进行sha1加密
+        3）开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
+    */
+  var str = [token, timestamp, nonce].sort().join('')
+  var sha = sha1(str)
+  console.log(sha,signature)
+  if (sha == signature) {
+    return echostr
+  } else {
+    return 'err'
+  }
+}
 module.exports = router
