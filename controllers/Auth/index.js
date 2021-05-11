@@ -31,6 +31,7 @@ router.get('/oauth2/wechat/check',async(ctx,next)=>{
   // querystring.parse()
   // console.log(ctx.request.query)
   var echostr = ctx.request.query.echostr||''
+  console.log(echostr)
   // var sha1 = crypto.createHash('sha1').update(str).digest('hex').toUpperCase();
   ctx.send(echostr)
 })
