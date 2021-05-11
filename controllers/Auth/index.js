@@ -51,7 +51,7 @@ function sign(signature, nonce, timestamp, echostr) {
   var sha = sha1(str)
   console.log(sha,signature,echostr)
   if (sha == signature) {
-    return echostr
+    return echostr+''
   } else {
     return 'err'
   }
