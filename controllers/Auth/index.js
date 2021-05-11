@@ -14,12 +14,15 @@ router.post('/auth/login',async(ctx,next)=>{
   }
   ctx.send(result)
 })
-router.get('/oauth2/wechat/check',async(ctx,next)=>{ 
+router.get('/oauth2/wechat/oauth2',async(ctx,next)=>{ 
   //ctx.send(new response(`result`) )
   const APPID = 'wx1945f85c362dd76f'
-  const REDIRECT_URI = 'localhost:8080'
+  const REDIRECT_URI = 'mpanda.studio'
   const path = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${APPID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=SCOPE&state=STATE#wechat_redirect`
   ctx.response.redirect(path);
+})
+router.get('/oauth2/wechat/check',async(ctx,next)=>{  
+  ctx.send(true)
 })
 
 module.exports = router
