@@ -2,9 +2,15 @@ let router = require('koa-router')()
 const User = require('../../model/User')
 var response = require('../../model/Response')
 let { AuthService } = require('../../services/auth')
+const https = require('https')
 var crypto = require('crypto')
 var sha1 = require('sha1')
 var querystring = require('querystring')
+const request = require('koa/lib/request')
+
+const APPID = 'wx1945f85c362dd76f'
+const SECRET = '2e16a7fd4243d23f59fe223b7f8f18c0'
+
 router.post('/auth/login', async (ctx, next) => {
   var user = User.Convert(ctx.request.body)
   var loginUser = await AuthService.login(user.account, user.password)
@@ -18,8 +24,7 @@ router.post('/auth/login', async (ctx, next) => {
 })
 router.get('/oauth2/wechat/oauth2', async (ctx, next) => {
   //ctx.send(new response(`result`) )
-  const APPID = 'wx1945f85c362dd76f'
-  const REDIRECT_URI = encodeURIComponent('https://api.mpanda.studio')
+  const REDIRECT_URI = encodeURIComponent('https://api.mpanda.studio/api/v1/oauth2/wechat/getUserInfo')
   const SCOPE = 'snsapi_userinfo'
   const STATE = ''
   const path = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${APPID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${SCOPE}&state=${STATE}#wechat_redirect`
@@ -34,6 +39,25 @@ router.get('/oauth2/wechat/check', async (ctx, next) => {
   } = ctx.request.query
   ctx.sendPlainText(sign(signature, nonce, timestamp, echostr))
   //ctx.res.end()
+})
+router.get('oauth2/wechat/getUserInfo', async (ctx, next) => {
+  const { code: CODE = '', state = '' } = ctx.request.query
+  const path = `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${APPID}&secret=${SECRET}&code=${CODE}&grant_type=authorization_code`
+  if (code) {
+    const data = await get(path)
+    console.log('DATA',data)
+    const {openid:OPENID='',access_token:ACCESS_TOKEN=''}=data
+    if(openid&&access_token){
+      const userAPI = `https://api.weixin.qq.com/sns/userinfo?access_token=${ACCESS_TOKEN}&openid=${OPENID}&lang=zh_CN`
+      const userData = await get(userAPI)
+      ctx.send(userData)
+    }else{ 
+      ctx.send('Get No OPENID OR ACCESS_TOKEN!'+'  ====  '+'OPENID:'+OPENID+',ACCESS_TOKEN:'+ACCESS_TOKEN)
+    }
+  } else {
+    //ctx.response.redirect('/oauth2/wechat/oauth2')
+    ctx.send('Get No Code!')
+  }
 })
 function sign(signature, nonce, timestamp, echostr) {
   var signature = signature //微信加密签名
@@ -56,5 +80,29 @@ function sign(signature, nonce, timestamp, echostr) {
     result = 'err'
   }
   return result
+}
+async function get(path) {
+  return new Promise((res, rej) => {
+    https
+      .get(path, (res) => {
+        var rawData = ''
+        res.setEncoding('utf8')
+        res.on('data', (d) => {
+          rawData += d
+        })
+        res.on('end', () => {
+          try {
+            const parsedData = JSON.parse(rawData)
+            // console.log(parsedData);
+            ctx.send(new response(parsedData))
+            res(parsedData)
+          } catch (e) {
+            console.error(e.message)
+            rej(e.message)
+          }
+        })
+      })
+      .end()
+  })
 }
 module.exports = router
