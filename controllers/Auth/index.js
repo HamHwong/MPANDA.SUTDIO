@@ -56,7 +56,7 @@ router.get('/oauth2/wechat/check', async (ctx, next) => {
   //ctx.res.end()
 })
 function checkAgent(ua = '') {
-  let ua = ua.toLowerCase()
+  ua = ua.toLowerCase()
   if (
     ua.match(/MicroMessenger/i) == 'micromessenger' &&
     ua.match(/wxwork/i) == 'wxwork'
