@@ -19,12 +19,12 @@ class WXLogin {
     )
     const SCOPE = 'snsapi_userinfo'
     const STATE = ''
-    const path = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${APPID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${SCOPE}&state=${STATE}#wechat_redirect`
+    const path = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${this.APPID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${SCOPE}&state=${STATE}#wechat_redirect`
     ctx.response.redirect(path)
   }
   static async GetUserInfo(ctx){
     const { code: CODE = '', state = '' } = ctx.request.query
-    const path = `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${APPID}&secret=${SECRET}&code=${CODE}&grant_type=authorization_code`
+    const path = `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${this.APPID}&secret=${this.SECRET}&code=${CODE}&grant_type=authorization_code`
     if (CODE) {
       const data = await get(path)
       console.log('DATA', data)
