@@ -19,18 +19,20 @@ router.post('/auth/login', async (ctx, next) => {
   ctx.send(result)
 })
 router.get('/oauth2/wechat/oauth2', async (ctx, next) => {
+  var agent = ''
   switch (checkAgent(ctx.request.header['user-agent'])) {
     case 'wx':
-      console.log('微信登录')
+      agent ='微信登录'
       WXLogin.WXOAuth(ctx)
       break
     case 'wxwork':
-      console.log('企业微信登录')
+      agent ='企业微信登录'
       break
     default:
-      console.log('其他登录')
+      agent='其他登录'
       break
   }
+  ctx.send(agent)
 })
 router.get('/oauth2/wechat/check', async (ctx, next) => {
   const {
