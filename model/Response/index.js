@@ -14,11 +14,11 @@ class response{
     this.IsSuccess = true
     this.StatusCode = 200
   } 
-  GetError(ErrorMessage){
+  GetError(ErrorMessage,errCode){
     this.Data = {}
     this.Message = ErrorMessage
     this.IsSuccess = false
-    this.StatusCode = 500
+    this.StatusCode = errCode||500
     return this
   }
 }

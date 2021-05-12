@@ -40,19 +40,21 @@ router.get('/oauth2/wechat/check', async (ctx, next) => {
   ctx.sendPlainText(sign(signature, nonce, timestamp, echostr))
   //ctx.res.end()
 })
-router.get('oauth2/wechat/getUserInfo', async (ctx, next) => {
+router.get('/oauth2/wechat/getUserInfo', async (ctx, next) => {
+  // console.log('????')
   const { code: CODE = '', state = '' } = ctx.request.query
   const path = `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${APPID}&secret=${SECRET}&code=${CODE}&grant_type=authorization_code`
-  if (code) {
+  if (CODE) {
     const data = await get(path)
     console.log('DATA',data)
     const {openid:OPENID='',access_token:ACCESS_TOKEN=''}=data
-    if(openid&&access_token){
+    if(OPENID&&ACCESS_TOKEN){
       const userAPI = `https://api.weixin.qq.com/sns/userinfo?access_token=${ACCESS_TOKEN}&openid=${OPENID}&lang=zh_CN`
       const userData = await get(userAPI)
       ctx.send(userData)
     }else{ 
-      ctx.send('Get No OPENID OR ACCESS_TOKEN!'+'  ====  '+'OPENID:'+OPENID+',ACCESS_TOKEN:'+ACCESS_TOKEN)
+      var msg = new response().GetError(data.errmsg,data.errcode) 
+      ctx.send(msg)
     }
   } else {
     //ctx.response.redirect('/oauth2/wechat/oauth2')
@@ -82,7 +84,7 @@ function sign(signature, nonce, timestamp, echostr) {
   return result
 }
 async function get(path) {
-  return new Promise((res, rej) => {
+  return new Promise((resolve, rej) => {
     https
       .get(path, (res) => {
         var rawData = ''
@@ -94,8 +96,8 @@ async function get(path) {
           try {
             const parsedData = JSON.parse(rawData)
             // console.log(parsedData);
-            ctx.send(new response(parsedData))
-            res(parsedData)
+            //ctx.send(new response(parsedData))
+            resolve(parsedData)
           } catch (e) {
             console.error(e.message)
             rej(e.message)
