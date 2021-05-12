@@ -18,6 +18,8 @@ module.exports = () => {
   return async (ctx, next) => {
     try{
       ctx.send = render.bind(ctx)
+      ctx.sendPlainText = (content)=>ctx.body=content
+      console.log('jsonify')
       await next()
     } catch (e) {
       ctx.body = JSON.stringify(new Response().GetError(String(e.stack)))  
