@@ -23,13 +23,28 @@ router.post('/auth/login', async (ctx, next) => {
   ctx.send(result)
 })
 router.get('/oauth2/wechat/oauth2', async (ctx, next) => {
-  //ctx.send(new response(`result`) )
-  const REDIRECT_URI = encodeURIComponent('https://api.mpanda.studio/api/v1/oauth2/wechat/getUserInfo')
+  switch (checkAgent(ctx.request.header['user-agent'])) {
+    case 'wx':
+      console.log('微信登录')
+      WXOAuth()
+      break
+    case 'wxwork':
+      console.log('企业微信登录')
+      break
+    default:
+      console.log('其他登录')
+      break
+  }
+})
+function WXOAuth() {
+  const REDIRECT_URI = encodeURIComponent(
+    'https://api.mpanda.studio/api/v1/oauth2/wechat/getUserInfo'
+  )
   const SCOPE = 'snsapi_userinfo'
   const STATE = ''
   const path = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${APPID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${SCOPE}&state=${STATE}#wechat_redirect`
   ctx.response.redirect(path)
-})
+}
 router.get('/oauth2/wechat/check', async (ctx, next) => {
   const {
     signature = '',
@@ -40,24 +55,33 @@ router.get('/oauth2/wechat/check', async (ctx, next) => {
   ctx.sendPlainText(sign(signature, nonce, timestamp, echostr))
   //ctx.res.end()
 })
+function checkAgent(ua = '') {
+  let ua = ua.toLowerCase()
+  if (
+    ua.match(/MicroMessenger/i) == 'micromessenger' &&
+    ua.match(/wxwork/i) == 'wxwork'
+  ) {
+    return 'wxwork'
+  } else if (ua.match(/micromessenger/i) == 'micromessenger') {
+    return 'wx'
+  }
+}
 router.get('/oauth2/wechat/getUserInfo', async (ctx, next) => {
-  // console.log('????')
   const { code: CODE = '', state = '' } = ctx.request.query
   const path = `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${APPID}&secret=${SECRET}&code=${CODE}&grant_type=authorization_code`
   if (CODE) {
     const data = await get(path)
-    console.log('DATA',data)
-    const {openid:OPENID='',access_token:ACCESS_TOKEN=''}=data
-    if(OPENID&&ACCESS_TOKEN){
+    console.log('DATA', data)
+    const { openid: OPENID = '', access_token: ACCESS_TOKEN = '' } = data
+    if (OPENID && ACCESS_TOKEN) {
       const userAPI = `https://api.weixin.qq.com/sns/userinfo?access_token=${ACCESS_TOKEN}&openid=${OPENID}&lang=zh_CN`
       const userData = await get(userAPI)
       ctx.send(userData)
-    }else{ 
-      var msg = new response().GetError(data.errmsg,data.errcode) 
+    } else {
+      var msg = new response().GetError(data.errmsg, data.errcode)
       ctx.send(msg)
     }
   } else {
-    //ctx.response.redirect('/oauth2/wechat/oauth2')
     ctx.send('Get No Code!')
   }
 })
@@ -95,8 +119,6 @@ async function get(path) {
         res.on('end', () => {
           try {
             const parsedData = JSON.parse(rawData)
-            // console.log(parsedData);
-            //ctx.send(new response(parsedData))
             resolve(parsedData)
           } catch (e) {
             console.error(e.message)
