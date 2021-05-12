@@ -26,7 +26,7 @@ router.get('/oauth2/wechat/oauth2', async (ctx, next) => {
   switch (checkAgent(ctx.request.header['user-agent'])) {
     case 'wx':
       console.log('微信登录')
-      WXOAuth()
+      WXOAuth(ctx)
       break
     case 'wxwork':
       console.log('企业微信登录')
@@ -36,7 +36,7 @@ router.get('/oauth2/wechat/oauth2', async (ctx, next) => {
       break
   }
 })
-function WXOAuth() {
+function WXOAuth(ctx) {
   const REDIRECT_URI = encodeURIComponent(
     'https://api.mpanda.studio/api/v1/oauth2/wechat/getUserInfo'
   )
