@@ -2,9 +2,9 @@ const response = require("../../model/Response")
 const { get } = require("./utils")
 
 class WXLogin {
+  static APPID = 'wx1945f85c362dd76f'
+  static SECRET = '2e16a7fd4243d23f59fe223b7f8f18c0'
   constructor() {
-    this.APPID = 'wx1945f85c362dd76f'
-    this.SECRET = '2e16a7fd4243d23f59fe223b7f8f18c0'
   }
   /**
    * 微信客户端OAuth跳转校验
@@ -19,12 +19,12 @@ class WXLogin {
     )
     const SCOPE = 'snsapi_userinfo'
     const STATE = ''
-    const path = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${this.APPID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${SCOPE}&state=${STATE}#wechat_redirect`
+    const path = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${APPID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${SCOPE}&state=${STATE}#wechat_redirect`
     ctx.response.redirect(path)
   }
   static async GetUserInfo(ctx){
     const { code: CODE = '', state = '' } = ctx.request.query
-    const path = `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${this.APPID}&secret=${this.SECRET}&code=${CODE}&grant_type=authorization_code`
+    const path = `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${APPID}&secret=${SECRET}&code=${CODE}&grant_type=authorization_code`
     if (CODE) {
       const data = await get(path)
       console.log('DATA', data)
