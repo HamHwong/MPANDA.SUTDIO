@@ -2,8 +2,9 @@ let router = require('koa-router')()
 const User = require('../../model/User')
 var response = require('../../model/Response')
 let { AuthService } = require('../../services/auth')
-const { checkAgent, get, sign } = require('./utils')
+const { checkAgent, get, sign ,AGENT} = require('./utils')
 const WXLogin = require('./WXLogin') 
+const WXWorkLogin = require('./WXWorkLogin')
 // const APPID = 'wx1945f85c362dd76f'
 // const SECRET = '2e16a7fd4243d23f59fe223b7f8f18c0' 
 
@@ -21,19 +22,24 @@ router.post('/auth/login', async (ctx, next) => {
 router.get('/oauth2/wechat/oauth2', async (ctx, next) => {
   var agent = ''
   switch (checkAgent(ctx.request.header['user-agent'])) {
-    case 'wx':
+    case AGENT.WX:
       agent ='微信登录'
       WXLogin.WXOAuth(ctx)
       break
-    case 'wxwork':
+    case AGENT.WXWORK:
+      WXWorkLogin.OAuth(ctx)
       agent ='企业微信登录'
       break
     default:
+      // 转到登录页面
       agent='其他登录'
       break
   }
   ctx.send(agent)
 })
+/** 
+ * 校验接口配置信息
+**/
 router.get('/oauth2/wechat/check', async (ctx, next) => {
   const {
     signature = '',

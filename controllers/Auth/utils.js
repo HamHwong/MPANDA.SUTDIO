@@ -1,7 +1,7 @@
-const https = require('https') 
-var sha1 = require('sha1') 
+const https = require('https')
+var sha1 = require('sha1')
 module.exports = {
-   checkAgent(ua = '') {
+  checkAgent(ua = '') {
     ua = ua.toLowerCase()
     if (
       ua.match(/MicroMessenger/i) == 'micromessenger' &&
@@ -12,7 +12,7 @@ module.exports = {
       return 'wx'
     }
   },
-  async  get(path) {
+  async get(path) {
     return new Promise((resolve, rej) => {
       https
         .get(path, (res) => {
@@ -34,7 +34,7 @@ module.exports = {
         .end()
     })
   },
-   sign(signature, nonce, timestamp, echostr) {
+  sign(signature, nonce, timestamp, echostr) {
     var signature = signature //微信加密签名
     var nonce = nonce //随机数
     var timestamp = timestamp //时间戳
@@ -55,5 +55,10 @@ module.exports = {
       result = 'err'
     }
     return result
+  },
+  AGENT:{
+    WX:'wx',
+    WXWORK:'wxwork',
+    OTHER:'other'
   }
 }
