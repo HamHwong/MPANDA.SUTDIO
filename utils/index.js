@@ -11,7 +11,8 @@ const { wssPort } = require('../config')
  const UtilsCollection={
     'db':require('./mongodb'),
     'logger':require('./log4js'),
-    'io':require('./websocket')(wssPort)
+    'io':require('./websocket')(wssPort),
+    'crypto':require('./crypto')
 }
 module.exports = (app)=>{
     for(utilCommand in UtilsCollection){

@@ -37,6 +37,7 @@
     "content-type": "^1.0.4",
     "cookies": "^0.8.0",
     "crypto": "^1.0.1",
+    "crypto-js": "^4.0.0",
     "crypto-random-string": "^2.0.0",
     "debug": "^3.1.0",
     "decompress-response": "^3.3.0",
