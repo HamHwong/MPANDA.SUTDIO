@@ -16,18 +16,18 @@ class IService {
     this.tableName = tableName
     this.Class = Class
   }
-  async Create(article,validation) { 
-    validation&&validation(article)
-    article.id = await this.GetNewMaxCount()
-    const { insertedId } = await db.Insert(this.tableName, article)
+  async Create(Instance,validation) { 
+    validation&&validation(Instance)
+    Instance.id = await this.GetNewMaxCount()
+    const { insertedId } = await db.Insert(this.tableName, Instance)
     return insertedId
   }
 
-  async Update(insertedId, article) { 
+  async Update(insertedId, Instance) { 
     return await db.Update(
       this.tableName,
       { _id: ObjectID(insertedId) },
-      article
+      Instance
     )
   }
 
@@ -40,9 +40,8 @@ class IService {
   async Delete(insertedId) {
     return await db.Delete(this.tableName, insertedId)
   }
-  async List() {}
-  async GetCountOfArticle() {}
-  async GetCountOfArticle() {
+  async List() {} 
+  async GetAmount() {
     return db.CountAll(this.tableName)
   }
   async GetNewMaxCount(){ 

@@ -58,7 +58,8 @@ module.exports = {
       })
     }
   },
-  async Update(table, condition, updatedObj) {
+  async Update(table, condition, updatedObj) { 
+    console.log(table)
     var method = {
       $set: {},
     }

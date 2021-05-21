@@ -22,7 +22,7 @@ module.exports = () => {
       // console.log('jsonify')
       await next()
     } catch (e) {
-      ctx.body = JSON.stringify(new Response().GetError(String(e.stack)))  
+      ctx.body = JSON.stringify(new Response().GetError(e.message))  
       ctx.utils.logger.info(String(e.stack))
     }
   }

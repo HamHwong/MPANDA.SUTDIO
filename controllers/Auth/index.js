@@ -8,15 +8,15 @@ const WXWorkLogin = require('./WXWorkLogin')
 const { isNull } = require('../../utils/common')
 // const APPID = 'wx1945f85c362dd76f'
 // const SECRET = '2e16a7fd4243d23f59fe223b7f8f18c0'
-
+const Service = new AuthService();
 router.post('/auth/login', async (ctx, next) => {
   var user = User.Convert(ctx.request.body)
-  var loginUser = await AuthService.login(user.account, user.password)
+  var loginUser = await Service.login(user.account, user.password)
   var result = null
   if (loginUser) {
     result = new response(loginUser)
   } else {
-    throw new Error('验证失败')
+    throw new Error('账号或密码输入错误!')
   }
   ctx.send(result)
 })
@@ -30,10 +30,10 @@ router.post('/auth/changePassword', async (ctx, next) => {
   if (newPassword !== repeatNewPassword) {
     throw new Error('两次输入的新密码不一致!')
   } 
-  newPassword = ctx.utils.crypto.Decode(newPassword,'4c25fa5a')
-  console.log('newPassword:',newPassword)
+  //newPassword = ctx.utils.crypto.Decode(newPassword,'4c25fa5a')
+  //console.log('newPassword:',newPassword)
   try{
-    var result = await AuthService.changePassword(user.account,newPassword)
+    var result = await Service.changePassword(user.account,newPassword)
     ctx.send(new response(result))
   }catch(err){ 
     ctx.send(new response().GetError(err.message))
