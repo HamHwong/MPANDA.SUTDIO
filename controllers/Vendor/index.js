@@ -28,7 +28,6 @@ router.get('/Vendor/Bing/GetDailyBG', async (ctx, next) => {
             res.on('end', () => {
                 try {
                     const parsedData = JSON.parse(rawData);
-                    // console.log(parsedData);
                     ctx.send(new response(parsedData))
                     resolve(parsedData)
                 } catch (e) {

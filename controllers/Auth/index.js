@@ -29,9 +29,7 @@ router.post('/auth/changePassword', async (ctx, next) => {
   }
   if (newPassword !== repeatNewPassword) {
     throw new Error('两次输入的新密码不一致!')
-  } 
-  //newPassword = ctx.utils.crypto.Decode(newPassword,'4c25fa5a')
-  //console.log('newPassword:',newPassword)
+  }  
   try{
     var result = await Service.changePassword(user.account,newPassword)
     ctx.send(new response(result))
