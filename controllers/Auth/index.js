@@ -2,10 +2,11 @@ let router = require('koa-router')()
 const User = require('../../model/User')
 var response = require('../../model/Response')
 let { AuthService } = require('../../services/auth')
-const { checkAgent, get, validation_wx,validation_wxwork, AGENT } = require('./utils')
+const { checkAgent, get,callback_wx, callback_wxwork, AGENT } = require('./utils')
 const WXLogin = require('./WXLogin')
 const WXWorkLogin = require('./WXWorkLogin')
 const { isNull } = require('../../utils/common')
+const db = require('../../utils/mongodb')
 // const APPID = 'wx1945f85c362dd76f'
 // const SECRET = '2e16a7fd4243d23f59fe223b7f8f18c0'
 const Service = new AuthService();
@@ -66,21 +67,35 @@ router.get('/oauth2/wechat/oauth2', async (ctx, next) => {
     timestamp = '',
     nonce = '',
   } = ctx.request.query
-  ctx.sendPlainText(validation_wx(signature, nonce, timestamp, echostr,'mpandastudio'))
+  var settings = await db.Query('Settings', { key: 'wxwork_auth' }) 
+  var wxsetting = {}
+  if (settings.length > 0) {
+    wxsetting = settings[0]
+  } else {
+    throw new Error('未找到配置项')
+  }
+  const {  token = 'mpandastudio' } = wxsetting
+  var result = await callback_wx(signature, nonce, timestamp, echostr,token)
+  ctx.sendPlainText(result)
 })
-router.get('/oauth2/wxwork/check', async (ctx, next) => {
+router.get('/oauth2/wxwork/check', async (ctx, next) => { 
   const {
     msg_signature = '', 
     echostr = '',
     timestamp = '',
     nonce = '',
-  } = ctx.request.query
-  process.stdout.write('ctx.request.query:'+ctx.request.query)
-  var resultXML = await validation_wxwork(msg_signature, nonce, timestamp,echostr )
-  process.stdout.write('result:'+resultXML)
-  ctx.sendPlainText(a)
+  } = ctx.request.query 
+  var settings = await db.Query('Settings', { key: 'wxwork_auth' }) 
+  var wxworksetting = {}
+  if (settings.length > 0) {
+    wxworksetting = settings[0]
+  } else {
+    throw new Error('未找到配置项')
+  }
+  const { corpId, token = 'mpandastudio', encodingAesKey } = wxworksetting
+  var result = await callback_wxwork(msg_signature, nonce, timestamp,echostr,encodingAesKey,token) 
+  ctx.sendPlainText(result)
 })
-
 router.get('/oauth2/wechat/getUserInfo', async (ctx, next) => {
   ctx.send(await WXLogin.GetUserInfo(ctx))
 })
