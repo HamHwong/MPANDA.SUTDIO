@@ -2,7 +2,7 @@ let router = require('koa-router')()
 const User = require('../../model/User')
 var response = require('../../model/Response')
 let { AuthService } = require('../../services/auth')
-const { checkAgent, get, sign, AGENT } = require('./utils')
+const { checkAgent, get, validation_wx,validation_wxwork, AGENT } = require('./utils')
 const WXLogin = require('./WXLogin')
 const WXWorkLogin = require('./WXWorkLogin')
 const { isNull } = require('../../utils/common')
@@ -59,14 +59,25 @@ router.get('/oauth2/wechat/oauth2', async (ctx, next) => {
 /**
  * 校验接口配置信息
  **/
-router.get('/oauth2/wechat/check', async (ctx, next) => {
+ router.get('/oauth2/wechat/check', async (ctx, next) => {
   const {
     signature = '',
     echostr = '',
     timestamp = '',
     nonce = '',
   } = ctx.request.query
-  ctx.sendPlainText(sign(signature, nonce, timestamp, echostr))
+  ctx.sendPlainText(validation_wx(signature, nonce, timestamp, echostr,'mpandastudio'))
+})
+router.get('/oauth2/wxwork/check', async (ctx, next) => {
+  const {
+    msg_signature = '', 
+    timestamp = '',
+    nonce = '',
+  } = ctx.request.query
+  console.log('ctx.request.query',ctx.request.query)
+  var resultXML = await validation_wxwork(msg_signature, nonce, timestamp )
+  console.log('result',resultXML)
+  ctx.sendPlainText(a)
 })
 
 router.get('/oauth2/wechat/getUserInfo', async (ctx, next) => {

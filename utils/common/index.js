@@ -9,6 +9,10 @@
 function isNull(data) {
   return data == '' || data == undefined || data == null 
 }
+function strToBase64(str){
+  return btoa(encodeURI(str));
+}
 module.exports ={
-  isNull
+  isNull,
+  strToBase64
 }

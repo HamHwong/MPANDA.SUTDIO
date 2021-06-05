@@ -1,6 +1,5 @@
 const CryptoJS = require('crypto-js')
-function Encode(message) {
-  const aseKey = '4c25fa5a'
+function Encode(message,aseKey='4c25fa5a') { 
   return CryptoJS.AES.encrypt(message, CryptoJS.enc.Utf8.parse(aseKey), {
     mode: CryptoJS.mode.ECB,
     padding: CryptoJS.pad.Pkcs7,

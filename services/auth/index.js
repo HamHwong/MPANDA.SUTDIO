@@ -23,7 +23,7 @@ class Auth extends IService {
     }
   }
   async changePassword(account, newPassword) {
-    console.log('changePassword', account, newPassword)
+    // console.log('changePassword', account, newPassword)
     const user = await this.ifUserExist(account)
     var ObjectID = mongodb.ObjectID
     // let result = await db.Update(
@@ -32,8 +32,8 @@ class Auth extends IService {
     //   { password: newPassword }
     // )
     let result = await this.Update(user._id, { password: newPassword })
-    console.log('user._id:', ObjectID(user._id))
-    console.log('result:', user.upsertedCount)
+    // console.log('user._id:', ObjectID(user._id))
+    // console.log('result:', user.upsertedCount)
     if (result.upsertedCount > 0) {
       return true
     } else {
