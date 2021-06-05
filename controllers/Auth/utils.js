@@ -1,7 +1,7 @@
 const https = require('https')
 var sha1 = require('sha1')
-const { strToBase64 } = require('../../utils/common')
-const { Encode } = require('../../utils/crypto')
+const { strToBase64, base64ToStr } = require('../../utils/common')
+const { Encode, Decode } = require('../../utils/crypto')
 const db = require('../../utils/mongodb')
 module.exports = {
   checkAgent(ua = '') {
@@ -75,12 +75,25 @@ module.exports = {
     var msg_signature = msg_signature //微信加密签名
     var nonce = nonce //随机数
     var timestamp = timestamp //时间戳 
-    var msg_encrypt = echostr
+    //echostr 加密的字符串。需要解密得到消息内容明文，解密后有random、msg_len、msg、receiveid四个字段，其中msg即为消息内容明文
+    //rand_msg = random(16B) + msg_len(4B) + msg + receiveid
+    // var rand_msg = 
+    var aes_msg=base64ToStr(echostr) 
+    var rand_msg=Decode(aes_msg)
+    var msg_len = rand_msg.substring(0,16)
+    var msg = rand_msg.substring(16,4)
+    var receiveid =  rand_msg.substring(20,4)
+
+    console.log('msg_len:',msg_len)
+    console.log('msg:',msg)
+    console.log('receiveid:',receiveid)
+
+    var msg_encrypt = strToBase64(Encode(rand_msg))
     
     var str = [token, timestamp, nonce, msg_encrypt].sort().join('')
-    strToBase64(Encode(str))
+    
     var sha = sha1(str)
-    console.log('wxwork', sha, msg_signature)
+    // console.log('wxwork', sha, msg_signature)
     var msg_encrypt = ''
     if (sha == msg_signature) {
       msg_encrypt = echostr + ''

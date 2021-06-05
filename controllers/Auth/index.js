@@ -68,18 +68,14 @@ router.get('/oauth2/wechat/oauth2', async (ctx, next) => {
   } = ctx.request.query
   ctx.sendPlainText(validation_wx(signature, nonce, timestamp, echostr,'mpandastudio'))
 })
-router.post('/oauth2/wxwork/check', async (ctx, next) => {
+router.get('/oauth2/wxwork/check', async (ctx, next) => {
   const {
     msg_signature = '', 
     echostr = '',
     timestamp = '',
     nonce = '',
   } = ctx.request.query
-  
-  var { ToUserName='', AgentID='' ,Encrypt=''} = ctx.request.body
-
   process.stdout.write('ctx.request.query:'+ctx.request.query)
-  process.stdout.write('ctx.request.body:'+ctx.request.body)
   var resultXML = await validation_wxwork(msg_signature, nonce, timestamp,echostr )
   process.stdout.write('result:'+resultXML)
   ctx.sendPlainText(a)
