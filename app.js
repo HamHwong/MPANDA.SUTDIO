@@ -23,7 +23,7 @@ const {
 } = config
 
 app.use(async (ctx, next) => {
-  console.log(`Process ${ctx.request.method} ${ctx.request.url}...`);
+  process.stdout.write(`Process ${ctx.request.method} ${ctx.request.url}`);
   await next();
 });
 // 文件上传，注意书写的位置很重要，否则无法上传

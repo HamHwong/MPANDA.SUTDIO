@@ -74,9 +74,9 @@ router.get('/oauth2/wxwork/check', async (ctx, next) => {
     timestamp = '',
     nonce = '',
   } = ctx.request.query
-  console.log('ctx.request.query',ctx.request.query)
+  process.stdout.write('ctx.request.query:'+ctx.request.query)
   var resultXML = await validation_wxwork(msg_signature, nonce, timestamp )
-  console.log('result',resultXML)
+  process.stdout.write('result:'+resultXML)
   ctx.sendPlainText(a)
 })
 
