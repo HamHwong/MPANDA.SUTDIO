@@ -59,7 +59,7 @@ module.exports = {
     }
     return result
   },
-  async validation_wxwork(msg_signature, nonce, timestamp) {
+  async validation_wxwork(msg_signature, nonce, timestamp,echostr) {
     //https://api.mpanda.studio/api/v1/oauth2/wechat_work/check 
 
     var settings = await db.Query('Settings', { key: 'wxwork_auth' })
@@ -75,18 +75,18 @@ module.exports = {
     var msg_signature = msg_signature //微信加密签名
     var nonce = nonce //随机数
     var timestamp = timestamp //时间戳 
-    var msg_encrypt = ''
+    var msg_encrypt = echostr
     
     var str = [token, timestamp, nonce, msg_encrypt].sort().join('')
     strToBase64(Encode(str))
-    // var sha = sha1(str)
-    // console.log('wxwork', sha, msg_signature)
-    // var msg_encrypt = ''
-    // if (sha == msg_signature) {
-    //   msg_encrypt = echostr + ''
-    // } else {
-    //   msg_encrypt = 'err'
-    // }
+    var sha = sha1(str)
+    console.log('wxwork', sha, msg_signature)
+    var msg_encrypt = ''
+    if (sha == msg_signature) {
+      msg_encrypt = echostr + ''
+    } else {
+      msg_encrypt = 'err'
+    }
     return `<xml>
 <Encrypt><![CDATA[${msg_encrypt}]]></Encrypt>
 <MsgSignature><![CDATA[${msg_signature}]]></MsgSignature>
