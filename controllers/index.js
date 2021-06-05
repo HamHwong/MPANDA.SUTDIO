@@ -13,6 +13,7 @@ var Vendor = require('./Vendor')
 var Game = require('./Game')
 var Article = require('./articles')
 var Auth = require('./Auth')
+var WXWork = require('./WXWork')
 
 module.exports = [
   MXDAPIRouter,
@@ -21,5 +22,6 @@ module.exports = [
   Vendor,
   Game,
   Article,
-  Auth
+  Auth,
+  WXWork
 ]

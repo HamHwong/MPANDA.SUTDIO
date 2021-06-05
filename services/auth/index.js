@@ -13,8 +13,7 @@ class Auth extends IService {
     super('Users', User)
   }
   async login(account, pwd) {
-    const user = await this.ifUserExist(account)
-    //console.log(user.password,pwd)
+    const user = await this.ifUserExist(account) 
     if (user.password === pwd) {
       delete user.password
       return user
@@ -22,18 +21,10 @@ class Auth extends IService {
       return false
     }
   }
-  async changePassword(account, newPassword) {
-    // console.log('changePassword', account, newPassword)
+  async changePassword(account, newPassword) { 
     const user = await this.ifUserExist(account)
-    var ObjectID = mongodb.ObjectID
-    // let result = await db.Update(
-    //   'Users',
-    //   { _id: ObjectID(user._id) },
-    //   { password: newPassword }
-    // )
-    let result = await this.Update(user._id, { password: newPassword })
-    // console.log('user._id:', ObjectID(user._id))
-    // console.log('result:', user.upsertedCount)
+    var ObjectID = mongodb.ObjectID 
+    let result = await this.Update(user._id, { password: newPassword }) 
     if (result.upsertedCount > 0) {
       return true
     } else {

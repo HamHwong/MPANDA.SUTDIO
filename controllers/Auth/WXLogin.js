@@ -1,5 +1,5 @@
-const response = require("../../model/Response")
-const { get } = require("./utils")
+const response = require("../../model/Response") 
+const { get } = require("../../utils/common")
 
 class WXLogin {
   static APPID = 'wx1945f85c362dd76f'

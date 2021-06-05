@@ -2,13 +2,14 @@ let router = require('koa-router')()
 const User = require('../../model/User')
 var response = require('../../model/Response')
 let { AuthService } = require('../../services/auth')
-const { checkAgent, get,callback_wx, callback_wxwork, AGENT } = require('./utils')
+const { checkAgent, callback_wx, callback_wxwork, AGENT } = require('./utils')
 const WXLogin = require('./WXLogin')
 const WXWorkLogin = require('./WXWorkLogin')
 const { isNull } = require('../../utils/common')
-const db = require('../../utils/mongodb')
 // const APPID = 'wx1945f85c362dd76f'
 // const SECRET = '2e16a7fd4243d23f59fe223b7f8f18c0'
+
+const {getConfig} =require('../../services/wxwork')
 const Service = new AuthService();
 router.post('/auth/login', async (ctx, next) => {
   var user = User.Convert(ctx.request.body)
@@ -67,35 +68,13 @@ router.get('/oauth2/wechat/oauth2', async (ctx, next) => {
     timestamp = '',
     nonce = '',
   } = ctx.request.query
-  var settings = await db.Query('Settings', { key: 'wxwork_auth' }) 
-  var wxsetting = {}
-  if (settings.length > 0) {
-    wxsetting = settings[0]
-  } else {
-    throw new Error('未找到配置项')
-  }
+  var wxsetting  = await getConfig('wxwork_auth') 
   const {  token = 'mpandastudio' } = wxsetting
   var result = await callback_wx(signature, nonce, timestamp, echostr,token)
   ctx.sendPlainText(result)
 })
-router.get('/oauth2/wxwork/check', async (ctx, next) => { 
-  const {
-    msg_signature = '', 
-    echostr = '',
-    timestamp = '',
-    nonce = '',
-  } = ctx.request.query 
-  var settings = await db.Query('Settings', { key: 'wxwork_auth' }) 
-  var wxworksetting = {}
-  if (settings.length > 0) {
-    wxworksetting = settings[0]
-  } else {
-    throw new Error('未找到配置项')
-  }
-  const { corpId, token = 'mpandastudio', encodingAesKey } = wxworksetting
-  var result = await callback_wxwork(msg_signature, nonce, timestamp,echostr,encodingAesKey,token) 
-  ctx.sendPlainText(result)
-})
+
+
 router.get('/oauth2/wechat/getUserInfo', async (ctx, next) => {
   ctx.send(await WXLogin.GetUserInfo(ctx))
 })
