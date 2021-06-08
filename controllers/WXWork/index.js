@@ -1,5 +1,5 @@
 const response = require('../../model/Response')
-const { getConfig, getAccessCode, addUserToDept,addUserToDeptByMobile } = require('../../services/wxwork')
+const { getConfig, getApplicationAccessCode, addUserToDept,addUserToDeptByMobile } = require('../../services/wxwork')
 const { callback_wxwork } = require('./utils')
 let router = require('koa-router')()
 /**
@@ -24,11 +24,11 @@ let router = require('koa-router')()
   )
   ctx.sendPlainText(result)
 })
-router.get('/oauth2/wxwork/getAccessCode', async (ctx, next) => { 
+router.get('/oauth2/wxwork/getApplicationAccessCode', async (ctx, next) => { 
   const {
     AgentId,Secret
   } = ctx.request.query 
-  ctx.send(new response(await getAccessCode(AgentId,Secret)))
+  ctx.send(new response(await getApplicationAccessCode(AgentId,Secret)))
 })
 router.post('/oauth2/wxwork/addUserToDept', async (ctx, next) => { 
   const {

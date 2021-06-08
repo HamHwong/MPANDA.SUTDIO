@@ -9,7 +9,15 @@ const WXWork = {
       throw new Error('未找到配置项')
     }
   },
-  async refreshAccessCode(AgentId, Secret, AccessCode, ExpiredTime) {
+  /**
+   * 更新数据库中的应用AccessCode
+   *
+   * @param {*} AgentId
+   * @param {*} Secret
+   * @param {*} AccessCode
+   * @param {*} ExpiredTime
+   */
+  async refreshApplicationAccessCode(AgentId, Secret, AccessCode, ExpiredTime) {
     await db.Insert('AccessCodeStore', {
       AgentId,
       Secret,
@@ -17,7 +25,14 @@ const WXWork = {
       ExpiredTime,
     })
   },
-  async getAccessCodeFromCache(agent_id, corpsecret) {
+  /**
+   * 从缓存中获取应用的AccessCode
+   *
+   * @param {*} agent_id
+   * @param {*} corpsecret
+   * @return {*} 
+   */
+  async getApplicationAccessCodeFromCache(agent_id, corpsecret) {
     const records = await db.Query(
       'AccessCodeStore',
       { AgentId: agent_id },
@@ -39,8 +54,15 @@ const WXWork = {
       return null
     }
   },
-  async getAccessCode(AgentId, corpsecret) { 
-    var Cache = await WXWork.getAccessCodeFromCache(AgentId, corpsecret)
+  /**
+   * 获取应用的AccessCode
+   *
+   * @param {*} AgentId
+   * @param {*} corpsecret
+   * @return {*} 
+   */
+  async getApplicationAccessCode(AgentId, corpsecret) { 
+    var Cache = await WXWork.getApplicationAccessCodeFromCache(AgentId, corpsecret)
     if (!Cache) {
       const { corpId } = await WXWork.getConfig('wxwork_auth')
       const api = `https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=${corpId}&corpsecret=${corpsecret}`
@@ -49,7 +71,7 @@ const WXWork = {
       const { errcode, errmsg, access_token, expires_in } = result
       if (result.errcode === 0) {
         var now = new Date()
-        WXWork.refreshAccessCode(
+        WXWork.refreshApplicationAccessCode(
           AgentId,
           corpsecret,
           access_token,
@@ -62,8 +84,15 @@ const WXWork = {
       return Cache
     }
   },
+  /**
+   * 从WXServer获取的用户信息
+   * @param {*} userid
+   * @param {*} AgentId
+   * @param {*} corpsecret
+   * @return {*} 
+   */
   async getUserInfo(userid, AgentId, corpsecret) { 
-    const AccessCode = await WXWork.getAccessCode(AgentId, corpsecret)
+    const AccessCode = await WXWork.getApplicationAccessCode(AgentId, corpsecret)
     const api = `https://qyapi.weixin.qq.com/cgi-bin/user/get?access_token=${AccessCode}&userid=${userid}`
     const result = await get(api)
     if (result.errcode === 0) {
@@ -72,8 +101,17 @@ const WXWork = {
       throw new Error('获取用户失败:' + result.errmsg)
     }
   },
+  /**
+   * 将用户添加到指定部门
+   *
+   * @param {*} userid
+   * @param {*} agentid
+   * @param {*} corpsecret
+   * @param {*} departmentid
+   * @return {*} 
+   */
   async addUserToDept(userid, agentid, corpsecret, departmentid) { 
-    const AccessCode = await WXWork.getAccessCode(agentid, corpsecret)
+    const AccessCode = await WXWork.getApplicationAccessCode(agentid, corpsecret)
     const user = await WXWork.getUserInfo(userid, agentid, corpsecret)
     if (user) {
       const { userid, department = [] } = user 
@@ -95,8 +133,16 @@ const WXWork = {
       throw new Error('获取用户失败')
     }
   },
+  /**
+   * 通过手机获取用户信息
+   *
+   * @param {*} mobile
+   * @param {*} agentid
+   * @param {*} corpsecret
+   * @return {*} 
+   */
   async getUserInfoByMobile(mobile, agentid, corpsecret) {
-    const AccessCode = await WXWork.getAccessCode(agentid, corpsecret)
+    const AccessCode = await WXWork.getApplicationAccessCode(agentid, corpsecret)
     const api = `https://qyapi.weixin.qq.com/cgi-bin/user/getuserid?access_token=${AccessCode}`
     const body = {
       mobile: mobile,
@@ -104,6 +150,15 @@ const WXWork = {
     const { data: result } = await post(api, body)
     return result
   },
+  /**
+   * 通过手机添加指定用户到指定部门
+   *
+   * @param {*} mobile
+   * @param {*} agentid
+   * @param {*} corpsecret
+   * @param {*} departmentid
+   * @return {*} 
+   */
   async addUserToDeptByMobile(mobile, agentid, corpsecret, departmentid) { 
     userIdRes = await WXWork.getUserInfoByMobile(mobile, agentid, corpsecret)
     if (userIdRes.errcode === 0) {
