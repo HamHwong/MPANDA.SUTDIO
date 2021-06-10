@@ -6,14 +6,15 @@
  * @Description: In User Settings Edit
  * @FilePath: /MPANDA.SUTDIO/api/index.js
  */ 
-var ImageAPIRouter = require('./Images')
-var MXDAPIRouter = require('./MXD')
-var DMS = require('./DMS')
-var Vendor = require('./Vendor')
-var Game = require('./Game')
-var Article = require('./articles')
-var Auth = require('./Auth')
-var WXWork = require('./WXWork')
+const ImageAPIRouter = require('./Images')
+const MXDAPIRouter = require('./MXD')
+const DMS = require('./DMS')
+const Vendor = require('./Vendor')
+const Game = require('./Game')
+const Article = require('./articles')
+const Catrgory = require('./articles/Category')
+const Auth = require('./Auth')
+const WXWork = require('./WXWork')
 
 module.exports = [
   MXDAPIRouter,
@@ -22,6 +23,7 @@ module.exports = [
   Vendor,
   Game,
   Article,
+  Catrgory,
   Auth,
   WXWork
 ]

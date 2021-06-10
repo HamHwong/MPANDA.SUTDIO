@@ -1,12 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2021-04-25 22:38:09
- * @LastEditTime: 2021-05-05 14:53:45
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \MPANDA.SUTDIO\controllers\articles\index.js
- */
-
 let router = require('koa-router')()
 var response = require('../../model/Response')
 const Service = require('../../services/articles') 
@@ -24,6 +15,7 @@ router.post('/article/create', async (ctx, next) => {
         if (isNull(article.content)) {
           throw new Error('不允许发空内容！')
         }
+        return true
       })
     )
   )
@@ -57,4 +49,5 @@ router.post('/article/delete/:id', async (ctx, next) => {
   var { id } = ctx.params
   ctx.send(new response(await service.Delete(id)))
 })
+
 module.exports = router

@@ -44,7 +44,7 @@ module.exports = {
       if (!isNull(orderCondition)) _query.sort(orderCondition)
       return _query.toArray()
     })
-  },
+  }, 
   async Insert(table, obj) {
     obj.createDate = new Date()
     obj.updateDate = new Date()
@@ -80,6 +80,12 @@ module.exports = {
       dbo.collection(table).deleteOne({ _id: ObjectID(id) })
     )
     return deletedCount
+  },
+  async Count(table,conditions){
+    return this.Connect((dbo)=>
+      dbo.collection(table).count(conditions)
+    )
+
   },
   async CountAll(table) {
     return this.Connect((dbo) => {
