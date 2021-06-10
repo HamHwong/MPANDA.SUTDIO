@@ -5,8 +5,7 @@ const IModel = require('../IModel')
  * @class Article
  */
 class Article extends IModel{ 
-  cate=null;
-  cateId=null;
+  cate={}; 
   title=null;
   content=null; 
   constructor() { 
