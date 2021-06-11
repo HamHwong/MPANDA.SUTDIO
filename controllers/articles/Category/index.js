@@ -4,9 +4,11 @@ const Service = require('../../../services/category')
 const Model = require('../../../model/Category')
 const { isNull } = require('../../../utils/common')
 const service = new Service.Category()
+
 router.get('/category/list', async (ctx, next) => {
   ctx.send(new response(await service.List()))
 })
+
 router.post('/category/create', async (ctx, next) => {
   var params = ctx.request.body 
   var category = Model.Convert({ cate_name: params.cate_name }) 

@@ -83,7 +83,7 @@ module.exports = {
   },
   async Count(table,conditions){
     return this.Connect((dbo)=>
-      dbo.collection(table).count(conditions)
+      dbo.collection(table).countDocuments(conditions)
     )
 
   },

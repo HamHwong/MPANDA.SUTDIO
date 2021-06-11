@@ -1,11 +1,33 @@
 let router = require('koa-router')()
 var response = require('../../model/Response')
-const Service = require('../../services/articles') 
+const Service = require('../../services/articles')
+const CateService = require('../../services/category')
 const Article = require('../../model/Articles/article')
 const { isNull } = require('../../utils/common')
 var service = new Service.Article()
+var cateService = new CateService.Category()
 router.post('/article/create', async (ctx, next) => {
-  var article = Article.Convert(ctx.request.body)
+  var article = Article.Convert(ctx.request.body) 
+  if (
+    !!article.cate &
+    !!article.cate.cate_name &
+    !!article.cate._id &
+    (article.cate._id === '_CREATE_CATEGORY_')
+  ) {
+    if (!await cateService.Exist({ cate_name: article.cate.cate_name })) {
+      article.cate._id = await cateService.Create({
+        cate_name: article.cate.cate_name,
+      })
+      console.log('_CREATE_CATEGORY_',article)
+    }else{
+      var result = await cateService.Query({ cate_name: article.cate.cate_name })[0]
+      // if(results.length>0){
+        // var result = results[0]
+        article.cate._id = result._id
+        article.cate.cate_name = result.cate_name
+      // }
+    }
+  }
   ctx.send(
     new response(
       await service.Create(article, (article) => {
@@ -43,7 +65,7 @@ router.post('/article/list/:cateId?', async (ctx, next) => {
   console.log(ctx.request.body)
   if (ctx.params.cateId) conditions.cateId = ctx.params.cateId
   // if (order) conditions.order = order
-  ctx.send(new response(await service.List(conditions, start, count,order)))
+  ctx.send(new response(await service.List(conditions, start, count, order)))
 })
 router.post('/article/delete/:id', async (ctx, next) => {
   var { id } = ctx.params
