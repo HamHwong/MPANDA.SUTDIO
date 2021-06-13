@@ -95,6 +95,8 @@ router.get('/Vendor/Other/GetDailyWords', async (ctx, next) => {
         })
       })
       .end()
-  }).catch((e) => {})
+  }).catch((e) => {
+    
+  })
 })
 module.exports = router

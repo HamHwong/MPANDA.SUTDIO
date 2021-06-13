@@ -61,10 +61,8 @@ router.post('/article/list/:cateId?', async (ctx, next) => {
   var start = params.start
   var count = params.count
   var conditions = {}
-  var order = params.order
-  console.log(ctx.request.body)
-  if (ctx.params.cateId) conditions.cateId = ctx.params.cateId
-  // if (order) conditions.order = order
+  var order = params.order 
+  if (ctx.params.cateId) conditions.cateId = ctx.params.cateId 
   ctx.send(new response(await service.List(conditions, start, count, order)))
 })
 router.post('/article/delete/:id', async (ctx, next) => {
