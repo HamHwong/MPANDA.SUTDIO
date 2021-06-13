@@ -17,15 +17,11 @@ router.post('/article/create', async (ctx, next) => {
     if (!await cateService.Exist({ cate_name: article.cate.cate_name })) {
       article.cate._id = await cateService.Create({
         cate_name: article.cate.cate_name,
-      })
-      console.log('_CREATE_CATEGORY_',article)
+      }) 
     }else{
       var result = await cateService.Query({ cate_name: article.cate.cate_name })[0]
-      // if(results.length>0){
-        // var result = results[0]
         article.cate._id = result._id
-        article.cate.cate_name = result.cate_name
-      // }
+        article.cate.cate_name = result.cate_name 
     }
   }
   ctx.send(
@@ -44,8 +40,23 @@ router.post('/article/create', async (ctx, next) => {
 })
 router.post('/article/update/:id', async (ctx, next) => {
   var { id } = ctx.params
-
   var article = Article.Convert(ctx.request.body)
+  if (
+    !!article.cate &
+    !!article.cate.cate_name &
+    !!article.cate._id &
+    (article.cate._id === '_CREATE_CATEGORY_')
+  ) {
+    if (!await cateService.Exist({ cate_name: article.cate.cate_name })) {
+      article.cate._id = await cateService.Create({
+        cate_name: article.cate.cate_name,
+      }) 
+    }else{
+      var result = await cateService.Query({ cate_name: article.cate.cate_name })[0]
+        article.cate._id = result._id
+        article.cate.cate_name = result.cate_name 
+    }
+  }
   ctx.send(new response(await service.Update(id, article)))
 })
 router.get('/article/search/:keywords', async (ctx, next) => {
