@@ -15,6 +15,7 @@ const Article = require('./articles')
 const Catrgory = require('./articles/Category')
 const Auth = require('./Auth')
 const WXWork = require('./WXWork')
+const Tasks = require('./tasks')
 
 module.exports = [
   MXDAPIRouter,
@@ -25,5 +26,6 @@ module.exports = [
   Article,
   Catrgory,
   Auth,
-  WXWork
+  WXWork,
+  Tasks
 ]

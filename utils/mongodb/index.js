@@ -59,18 +59,18 @@ module.exports = {
     }
   },
   async Update(table, condition, updatedObj) { 
-    console.log(table)
+    // console.log(table, condition, updatedObj)
     var method = {
       $set: {},
     }
     for (var propKey in updatedObj) {
-      if (!isNull(updatedObj[propKey]))
+      if (!isNull(updatedObj[propKey])){
         method.$set[propKey] = updatedObj[propKey]
+      }
     }
     delete method.$set._id
     delete method.$set.id
     method.$set.updateDate = new Date()
-    // console.log(condition._id instanceof ObjectID,method)
     return await this.Connect((dbo) =>
       dbo.collection(table).updateOne(condition, method)
     )

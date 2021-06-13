@@ -4,7 +4,7 @@ const axios = require('axios');
 const querystring = require('querystring')
 module.exports = {
   isNull(data) {
-    return data == '' || data == undefined || data == null
+    return data === '' || data === undefined || data === null
   },
   async get(path) {
     return new Promise((resolve, reject) => {

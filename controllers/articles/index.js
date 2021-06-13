@@ -1,10 +1,10 @@
 let router = require('koa-router')()
 var response = require('../../model/Response')
-const Service = require('../../services/articles')
+const {Articles} = require('../../services/articles')
 const CateService = require('../../services/category')
 const Article = require('../../model/Articles/article')
 const { isNull } = require('../../utils/common')
-var service = new Service.Article()
+var service = new Articles()
 var cateService = new CateService.Category()
 router.post('/article/create', async (ctx, next) => {
   var article = Article.Convert(ctx.request.body) 

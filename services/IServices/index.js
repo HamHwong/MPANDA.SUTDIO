@@ -59,7 +59,9 @@ class IService {
   }
 
   async Get(insertedId) {
-    return await db.Get(this.tableName, insertedId)
+    const result = await db.Get(this.tableName, insertedId)
+    // console.log('result',result)
+    return result
   }
   async Exist(Condition){
     const count =  await db.Count(
