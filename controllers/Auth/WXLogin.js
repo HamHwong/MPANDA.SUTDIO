@@ -27,7 +27,7 @@ class WXLogin {
     const path = `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${this.APPID}&secret=${this.SECRET}&code=${CODE}&grant_type=authorization_code`
     if (CODE) {
       const data = await get(path)
-      console.log('DATA', data)
+      // console.log('DATA', data)
       const { openid: OPENID = '', access_token: ACCESS_TOKEN = '' } = data
       if (OPENID && ACCESS_TOKEN) {
         const userAPI = `https://api.weixin.qq.com/sns/userinfo?access_token=${ACCESS_TOKEN}&openid=${OPENID}&lang=zh_CN`

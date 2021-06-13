@@ -26,9 +26,9 @@ class Tasks extends IService {
     // 生成新任务
     const newTasks = tasks.filter(task=>!existedTasks.find(existTask=>existTask.content.trim()===task.content.trim()))
     const oldTasks = tasks.filter(task=>existedTasks.find(existTask=>existTask.content.trim()===task.content.trim()))
-    console.log('existedTasks',existedTasks)
-    console.log('newTasks',newTasks)
-    console.log('oldTasks',oldTasks)
+    // console.log('existedTasks',existedTasks)
+    // console.log('newTasks',newTasks)
+    // console.log('oldTasks',oldTasks)
     newTasks.map(async newTask=>{
       await this.Create(newTask)
     })
@@ -44,11 +44,8 @@ class Tasks extends IService {
     })
     // 对于从内容中被删除的老的任务，不做更新 
   } 
-  async getTasksByArticle(_id){
-    console.log('relatedId',_id)
-    console.log('this.tableName',this.tableName)
-    const tasks = await this.List({relatedId:_id})
-    console.log('tasks',tasks)
+  async getTasksByArticle(_id){ 
+    const tasks = await this.List({relatedId:_id}) 
     return tasks.map(i=>TaskModel.Convert(i))
   }
   async getTasksFromArticle(Article) { 
@@ -102,5 +99,14 @@ class Tasks extends IService {
       throw new Error('未找到该任务！')
     }
   }
+
+  // async updateTaskInArticle(task){
+  //   this.tableName= 'Articles'
+  //   const Article = await this.Get(task.relatedId)
+  //   this.tableName= 'Tasks' 
+  //   if(Article&&task.relatedId){
+  //     return await this.Update(task.relatedId,{content:Article.content.replaceAll(task.revertToString(),task.toString())})
+  //   }
+  // }
 }
 module.exports.Tasks = Tasks

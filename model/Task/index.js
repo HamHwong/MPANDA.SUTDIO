@@ -15,6 +15,9 @@ class Task extends IModel{
   toString(){
     return `* [${this.status===ENUMS.COMPLETED?'X':' '}] ${this.content}`
   }
+  revertToString(){ 
+    return `* [${this.status===ENUMS.COMPLETED?' ':'X'}] ${this.content}`
+  }
 }
 
 module.exports = Task
