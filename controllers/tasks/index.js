@@ -5,6 +5,29 @@ const TaskModel  = require('../../model/Task')
 const { Articles: ArticleService } = require('../../services/articles')
 const service = new TaskService()
 const articleService = new ArticleService()
+/**
+ * @swagger
+ * /api/v1/tasks/list:
+ *   get:
+ *     summary: 获取任务列表
+ *     description: 获取任务列表
+ *     tags:
+ *       - Tasks
+ *     parameters:
+ *       - name: start
+ *         in: query
+ *         required: true  
+ *         type: number
+ *         description: 开始List Index
+ *       - name: count
+ *         in: query
+ *         required: true  
+ *         type: number
+ *         description: 获取数量
+ *     responses:
+ *       200:
+ *         description:
+ */
 router.get('/tasks/list', async (ctx, next) => {
   var params = ctx.request.body
   var start = params.start

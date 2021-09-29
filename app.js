@@ -7,12 +7,14 @@
  * @FilePath: /MPANDA.SUTDIO/app.js
  */
 const Koa = require("koa");
+const {koaSwagger} = require('koa2-swagger-ui')
+const swaggerGenerator = require('./config/swagger')
+
 const app = new Koa();
 const config = require("./config")
 const router = require("./router")
 const middleware = require("./middleware"); 
-const utils = require("./utils");
-
+const utils = require("./utils"); 
 var cors = require('koa2-cors');
 
 const bodyParser = require('koa-bodyparser');
@@ -21,7 +23,14 @@ const {
   port,
   static
 } = config
-
+// Swagger 
+app.use(koaSwagger({
+  routePrefix: '/swagger', // host at /swagger instead of default /docs
+  swaggerOptions: {
+    url: '/swagger.json', // example path to json 其实就是之后swagger-jsdoc生成的文档地址
+  },
+}))
+// Log
 app.use(async (ctx, next) => {
   console.log(`Process ${ctx.request.method} ${ctx.request.url}`);
   await next();
@@ -40,6 +49,7 @@ utils(app);
 app.use(cors());
 // Setup Main App
 app
+  .use(swaggerGenerator.routes())
   .use(router.routes())
   .use(static)
   .listen(port,function () {

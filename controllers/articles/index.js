@@ -6,6 +6,22 @@ const Article = require('../../model/Articles/article')
 const { isNull } = require('../../utils/common')
 var service = new Articles()
 var cateService = new CateService.Category()
+// 定义模型 可以公用 schema $ref
+/**
+ * @swagger
+ * definitions:
+ *   Logiqqn:
+ *     required:
+ *       - username
+ *       - password
+ *     properties:
+ *       username:
+ *         type: string
+ *       password:
+ *         type: string
+ *       path:
+ *         type: string
+ */ 
 router.post('/article/create', async (ctx, next) => {
   var article = Article.Convert(ctx.request.body) 
   if (

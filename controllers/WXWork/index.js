@@ -5,7 +5,8 @@ let router = require('koa-router')()
 /**
  * 校验接口配置信息 For WXWork
  **/
- router.get('/oauth2/wxwork/check', async (ctx, next) => {
+
+router.get('/oauth2/wxwork/check', async (ctx, next) => {
   const {
     msg_signature = '',
     echostr = '',

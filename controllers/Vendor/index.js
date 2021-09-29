@@ -1,17 +1,20 @@
-/*
- * @Author: your name
- * @Date: 2021-03-19 11:23:26
- * @LastEditTime: 2021-05-06 15:22:35
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: /MPANDA.SUTDIO/controllers/Vendor/index.js
- */
 const https = require('https')
 const http = require('http')
 const axios = require('axios')
 var response = require('../../model/Response')
 let router = require('koa-router')()
-
+/**
+ * @swagger
+ * /api/v1/Vendor/Bing/GetDailyBG:
+ *   get:
+ *     summary: 从Bing获取今日壁纸
+ *     description: 从Bing获取今日壁纸
+ *     tags:
+ *       - Vendor 
+ *     responses:
+ *       200:
+ *         description: 从Bing获取今日壁纸的信息
+ */
 router.get('/Vendor/Bing/GetDailyBG', async (ctx, next) => {
   var options = {
     host: 'cn.bing.com',
@@ -54,6 +57,18 @@ router.get('/Vendor/Bing/GetDailyBG', async (ctx, next) => {
       .end()
   }).catch((e) => {})
 })
+/**
+ * @swagger
+ * /api/v1/Vendor/Other/GetDailyWords:
+ *   get:
+ *     summary: 获取段子文字
+ *     description: 获取段子文字
+ *     tags:
+ *       - Vendor
+ *     responses:
+ *       200:
+ *         description: 获取段子文字
+ */
 router.get('/Vendor/Other/GetDailyWords', async (ctx, next) => {
   //http://api.lkblog.net/ws/api.php
   var options = {

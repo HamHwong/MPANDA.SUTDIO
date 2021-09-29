@@ -1,0 +1,61 @@
+{
+	// Place your MPANDA.SUTDIO 工作区 snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"swagger:model": {
+		"scope": "javascript,typescript",
+		"prefix": "swagger",
+		"body": [
+			"/**",
+			"* @swagger",
+			"* definitions:",
+			"*   ${1:ModelName}:",
+			"*     required:",
+			"*       - ${2:RequiredField}", 
+			"*     properties:",
+			"*       ${2:RequiredField}:",
+			"*         type: ${3:Type}", 
+			"*/ ",
+		],
+		"description": "Log output to console"
+	},
+	"swagger:function": {
+		"scope": "javascript,typescript",
+		"prefix": "swagger",
+		"body": [
+			"/**",
+			" * @swagger",
+			" * /api/v1/${1:API URL}:",
+			" *   ${2|get,post,put,delete,options|}:",
+			" *     summary: ${3:summary}",
+			" *     description: ${3:detail description}",
+			" *     tags:",
+			" *       - ${4:group name}",
+			" *     parameters:",
+			" *       - name: ${5:Params}",
+			" *         in: ${6|query,header,path,formData,body|}",
+			" *         required: ${7|true,false|}",
+			" *         description: ${8:param description}",
+			" *         type: ${9|string,number,integer,boolean,array,file|}",
+			" *         ${10: schema}",
+			" *     responses:",
+			" *       200:",
+			" *         description: ${10:response description}",
+			" */",
+		],
+		"description": "Log output to console"
+	}
+}
